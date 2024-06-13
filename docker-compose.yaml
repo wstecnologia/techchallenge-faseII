@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  postresql:
+    image: postgres:latest
+    container_name: postgres_ws
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: admin@123
+      POSTGRES_USER: admin
+      POSTGRES_DB: lanchonete_ws
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080
+
+  lanchonetews:
+    build: 
+      context: ./
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      WS_DB_HOST: postresql
+      WS_DB_USER: admin
+      WS_DB_PASSWORD: admin@123
+      WS_DB_NAME: lanchonete_ws
+    depends_on:
+      - postresql
+      
+  sql-runner:
+    image: postgres:latest
+    depends_on:
+      - postresql
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    command: bash -c "sleep 10 && PGPASSWORD=admin@123 psql -h postresql -U admin -d lanchonete_ws -a -f /docker-entrypoint-initdb.d/create_table.sql"
