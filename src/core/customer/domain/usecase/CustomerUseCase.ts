@@ -3,11 +3,10 @@ import ErrosMessage from "@/core/shared/error/ErrosMessage"
 import ICustomerRepository from "../../ports/out/CustomerRepository"
 import Pagination from "@/core/shared/pagination/Pagination"
 import PageResponse from "@/core/shared/pagination/PageResponse"
-import AppErros from "@/core/shared/error/AppErros"
+import AppErrors from "@/core/shared/error/AppErrors"
 import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
-import { ICustomerUserCase } from "./ICustormerUserCase"
 
-export default class CustomerUseCase implements ICustomerUserCase {
+export default class CustomerUseCase {
   constructor(
     private customerRepository: ICustomerRepository,
     private iGenerator: IdGenerator,
@@ -16,13 +15,13 @@ export default class CustomerUseCase implements ICustomerUserCase {
   async registerCustomer(newCustomers: any): Promise<any> {
     const cpf = newCustomers.cpf.replace(/\D/g, "")
     if (!cpf) {
-      throw new AppErros(ErrosMessage.INFORM_NUMBER_CPF)
+      throw new AppErrors(ErrosMessage.INFORM_NUMBER_CPF)
     }
 
     const existingCustomer = await this.customerRepository.findByCpf(cpf)
 
     if (existingCustomer) {
-      throw new AppErros(ErrosMessage.USUARIO_JA_EXISTE)
+      throw new AppErrors(ErrosMessage.USUARIO_JA_EXISTE)
     }
 
     const newCustomer = Customer.factory({
@@ -44,14 +43,14 @@ export default class CustomerUseCase implements ICustomerUserCase {
 
   async listAllCustomers(page: number): Promise<PageResponse<Customer>> {
     if (page <= 0) {
-      throw new AppErros(ErrosMessage.ENTER_PAGE_VALID, 404)
+      throw new AppErrors(ErrosMessage.ENTER_PAGE_VALID, 404)
     }
 
     const customers = await this.customerRepository.listAll(page)
     const totalCustomers: number = await this.customerRepository.countCustomers()
     const totalPages = Math.ceil(totalCustomers / 10)
     if (!customers) {
-      throw new AppErros(ErrosMessage.LIST_NOT_LOCALIZED, 404)
+      throw new AppErrors(ErrosMessage.LIST_NOT_LOCALIZED, 404)
     }
     const pagination: Pagination = {
       currentPage: page,
@@ -68,15 +67,15 @@ export default class CustomerUseCase implements ICustomerUserCase {
   async getCustomerCpf(cpf: string): Promise<Customer | null> {
     const _cpf = cpf.replace(/\D/g, "")
     if (_cpf.length !== 11) {
-      throw new AppErros(ErrosMessage.NUMBER_OF_CPF_MUST_CONTAIN_DIGITS)
+      throw new AppErrors(ErrosMessage.NUMBER_OF_CPF_MUST_CONTAIN_DIGITS)
     }
 
     if (!_cpf.toString().trim()) {
-      throw new AppErros(ErrosMessage.ENTER_VALID_NUMBER)
+      throw new AppErrors(ErrosMessage.ENTER_VALID_NUMBER)
     }
 
     const returnValidation = await this.customerRepository.findByCpf(_cpf)
-    if (!returnValidation) throw new AppErros(ErrosMessage.USUARIO_NAO_LOCALIZADO, 401)
+    if (!returnValidation) throw new AppErrors(ErrosMessage.USUARIO_NAO_LOCALIZADO, 401)
 
     return returnValidation
   }

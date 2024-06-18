@@ -1,4 +1,4 @@
-import AppErros from "@/core/shared/error/AppErros"
+import AppErrors from "@/core/shared/error/AppErrors"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
 
 export default class OrderItems {
@@ -82,7 +82,7 @@ export default class OrderItems {
 
   private validateQuantity(value: number): number {
     if (typeof value !== "number" || isNaN(value) || value <= 0) {
-      throw new AppErros(ErrosMessage.ITEMS_WITH_QUANTITY_ZEROED)
+      throw new AppErrors(ErrosMessage.ITEMS_WITH_QUANTITY_ZEROED)
     }
     return value
   }

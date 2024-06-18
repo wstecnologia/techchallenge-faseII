@@ -1,4 +1,4 @@
-import AppErros from "@/core/shared/error/AppErros"
+import AppErrors from "@/core/shared/error/AppErrors"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
 
 interface IProduct {
@@ -80,7 +80,7 @@ export default class Product {
 
   private setName(value: string) {
     if (!value) {
-      throw new AppErros(ErrosMessage.INVALID_NAME)
+      throw new AppErrors(ErrosMessage.INVALID_NAME)
     }
     this._name = value
   }
@@ -91,7 +91,7 @@ export default class Product {
 
   private setPrice(value: number) {
     if (value <= 0) {
-      throw new AppErros(ErrosMessage.INVALID_PRICE)
+      throw new AppErrors(ErrosMessage.INVALID_PRICE)
     }
     this._price = value
   }

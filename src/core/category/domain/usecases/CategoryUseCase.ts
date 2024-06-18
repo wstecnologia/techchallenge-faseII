@@ -1,6 +1,6 @@
 import Category from "@/core/category/domain/entities/Category"
 import ICategoryRepository from "@/core/category/ports/out/ICategoryRepository"
-import AppErros from "@/core/shared/error/AppErros"
+import AppErrors from "@/core/shared/error/AppErrors"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
 import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
 import PageResponse from "@/core/shared/pagination/PageResponse"
@@ -15,7 +15,7 @@ export default class CategoryUseCase {
   async findById(id: string): Promise<Category> {
     const category = await this.categoryRepository.findById(id)
     if (!category) {
-      throw new AppErros(ErrosMessage.CATEGORY_NOT_FOUND)
+      throw new AppErrors(ErrosMessage.CATEGORY_NOT_FOUND)
     }
     return category
   }
@@ -24,7 +24,7 @@ export default class CategoryUseCase {
     const existingCategory = await this.categoryRepository.findById(category.id)
 
     if (existingCategory) {
-      throw new AppErros(ErrosMessage.CATEGORY_ALREADY_EXISTS)
+      throw new AppErrors(ErrosMessage.CATEGORY_ALREADY_EXISTS)
     }
 
     const newCategory = Category.factory({
@@ -62,7 +62,7 @@ export default class CategoryUseCase {
   async delete(categoryId: string): Promise<void> {
     const category = await this.findById(categoryId)
     if (!category) {
-      throw new AppErros(ErrosMessage.CATEGORY_NOT_FOUND)
+      throw new AppErrors(ErrosMessage.CATEGORY_NOT_FOUND)
     }
     await this.categoryRepository.delete(categoryId)
   }

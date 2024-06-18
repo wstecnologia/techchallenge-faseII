@@ -3,7 +3,7 @@ import OrderRepository from "../../ports/out/OrderRepository"
 import Pagination from "@/core/shared/pagination/Pagination"
 import PageResponse from "@/core/shared/pagination/PageResponse"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
-import AppErros from "@/core/shared/error/AppErros"
+import AppErrors from "@/core/shared/error/AppErrors"
 import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
 import { Payment } from "@/core/payment/domain/entities/Payment"
 import OrderItems from "../entities/OrderItems"
@@ -56,7 +56,7 @@ export default class OrderUseCase {
     const findOrder = await this._orderRepository.findOrderByNumber(orderId)
 
     if (!findOrder) {
-      throw new AppErros("ORDER NOT LOCATE", 404)
+      throw new AppErrors("ORDER NOT LOCATE", 404)
     }
 
     await this._orderRepository.updateOrderStatus(orderId, "3f4798e6-1f03-411e-b99b-73833c104255")
@@ -67,14 +67,14 @@ export default class OrderUseCase {
 
   async listAllOrders(page: number): Promise<PageResponse<Order>> {
     if (page <= 0) {
-      throw new AppErros(ErrosMessage.ENTER_PAGE_VALID, 404)
+      throw new AppErrors(ErrosMessage.ENTER_PAGE_VALID, 404)
     }
     const orders = await this._orderRepository.listAllOrders(page)
     const totalOrders: number = await this._orderRepository.countOrders()
     const totalPages = Math.ceil(totalOrders / 10)
 
     if (orders.length === 0) {
-      throw new AppErros(ErrosMessage.LIST_NOT_LOCALIZED, 404)
+      throw new AppErrors(ErrosMessage.LIST_NOT_LOCALIZED, 404)
     }
 
     const pagination: Pagination = {

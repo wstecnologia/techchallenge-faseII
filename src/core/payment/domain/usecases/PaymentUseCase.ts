@@ -1,4 +1,4 @@
-import AppErros from "@/core/shared/error/AppErros"
+import AppErrors from "@/core/shared/error/AppErrors"
 import PaymentRepository from "../../ports/out/IPaymentRepository"
 import { Payment } from "../entities/Payment"
 import { QRCode } from "../value-objects/QRCode"
@@ -15,7 +15,7 @@ export default class PaymentUseCase {
       await this.paymentRepository.processPayment(payment)
       return payment
     } catch (error) {
-      throw new AppErros(ErrosMessage.PAGAMENTO_NAO_PROCESSADO, 401)
+      throw new AppErrors(ErrosMessage.PAGAMENTO_NAO_PROCESSADO, 401)
     }
   }
 

@@ -1,7 +1,7 @@
 import ProductRepository from "@/adapters/out/persistence/Product/ProductRepository"
 import Id from "@/adapters/out/persistence/generateID/Id"
 import Product from "@/core/product/domain/entities/Product"
-import ProductUseCase from "@/core/product/domain/usecases/Product.usecase"
+import ProductUseCase from "@/core/product/domain/usecases/ProductUseCase"
 import PageResponse from "@/core/shared/pagination/PageResponse"
 
 export default class ProductController {

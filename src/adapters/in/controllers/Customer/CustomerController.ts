@@ -1,7 +1,7 @@
 import CustomerRepository from "@/adapters/out/persistence/Customer/CustomerRepository"
 import Id from "@/adapters/out/persistence/generateID/Id"
-import { ICustomerDto } from "../../dto/curstomerDto"
-import CustomerUseCase from "@/core/customer/domain/usecase/Customer.usecase"
+import { ICustomerDto } from "../../dtos/curstomerDto"
+import CustomerUseCase from "@/core/customer/domain/usecase/CustomerUseCase"
 
 export default class CustomerController {
   constructor(

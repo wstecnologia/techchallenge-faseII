@@ -1,4 +1,4 @@
-export default class AppErros {
+export default class AppErrors {
   errorCode: number
   message: string
   constructor(message: string, errorCode: number = 400) {

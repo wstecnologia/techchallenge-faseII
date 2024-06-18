@@ -1,4 +1,4 @@
-import AppErros from "@/core/shared/error/AppErros"
+import AppErrors from "@/core/shared/error/AppErrors"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
 
 interface ICustomer {
@@ -62,11 +62,11 @@ export default class Customer {
   private cpfValidate(cpf: string): string {
     const strCpf = cpf.replace(/\D/g, "")
     if (strCpf.length !== 11) {
-      throw new AppErros(ErrosMessage.NUMBER_OF_CPF_MUST_CONTAIN_DIGITS)
+      throw new AppErrors(ErrosMessage.NUMBER_OF_CPF_MUST_CONTAIN_DIGITS)
     }
 
     if (!strCpf.toString().trim()) {
-      throw new AppErros(ErrosMessage.ENTER_VALID_NUMBER)
+      throw new AppErrors(ErrosMessage.ENTER_VALID_NUMBER)
     }
     return strCpf.trim()
   }

@@ -1,7 +1,7 @@
 import OrderRepository from "@/adapters/out/persistence/Order/OrderRepository"
 import Id from "@/adapters/out/persistence/generateID/Id"
 import Order from "@/core/order/domain/entities/Order"
-import OrderUseCase from "@/core/order/domain/usecases/Order.usecase"
+import OrderUseCase from "@/core/order/domain/usecases/OrderUseCase"
 import { Timer } from "@/core/shared/Timer"
 
 const orderRepository = new OrderRepository()

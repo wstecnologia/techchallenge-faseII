@@ -1,6 +1,6 @@
 import CategoryController from "@/adapters/in/controllers/Category/CategoryController"
 import CategoryRepository from "@/adapters/out/persistence/Category/CategoryRepository"
-import CategoryUseCase from "@/core/category/domain/usecases/Category.usecase"
+import CategoryUseCase from "@/core/category/domain/usecases/CategoryUseCase"
 import ExpressAdapter from "../ExpressAdapter"
 import Id from "@/adapters/out/persistence/generateID/Id"
 class CategoryRoutes {

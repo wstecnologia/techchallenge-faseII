@@ -1,4 +1,4 @@
-import AppErros from "@/core/shared/error/AppErros"
+import AppErrors from "@/core/shared/error/AppErrors"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
 
 interface ICategory {
@@ -49,7 +49,7 @@ export default class Category {
 
   private setName(value: string) {
     if (!value) {
-      throw new AppErros(ErrosMessage.INVALID_NAME)
+      throw new AppErrors(ErrosMessage.INVALID_NAME)
     }
     this._name = value
   }

@@ -1,4 +1,4 @@
-import AppErros from "@/core/shared/error/AppErros"
+import AppErrors from "@/core/shared/error/AppErrors"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
 import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
 import PageResponse from "@/core/shared/pagination/PageResponse"
@@ -33,7 +33,7 @@ export default class ProductUseCase {
 
   async findById(productId: string): Promise<Product> {
     const product = await this.productRepository.findById(productId)
-    if (!product) throw new AppErros(ErrosMessage.PRODUTO_NAO_LOCALIZADO, 400)
+    if (!product) throw new AppErrors(ErrosMessage.PRODUTO_NAO_LOCALIZADO, 400)
     return product
   }
 
@@ -41,7 +41,7 @@ export default class ProductUseCase {
     const products = await this.productRepository.findByCategory(categoryId, page)
 
     if (!products) {
-      throw new AppErros(ErrosMessage.PRODUTO_NAO_LOCALIZADO)
+      throw new AppErrors(ErrosMessage.PRODUTO_NAO_LOCALIZADO)
     }
 
     const totalProducts: number = await this.productRepository.countProducts()

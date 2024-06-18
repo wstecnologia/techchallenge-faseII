@@ -1,5 +1,5 @@
 import Category from "@/core/category/domain/entities/Category"
-import CategoryUseCase from "@/core/category/domain/usecases/Category.usecase"
+import CategoryUseCase from "@/core/category/domain/usecases/CategoryUseCase"
 import ICategoryRepository from "@/core/category/ports/out/ICategoryRepository"
 import PageResponse from "@/core/shared/pagination/PageResponse"
 
