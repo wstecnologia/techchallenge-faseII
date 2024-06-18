@@ -9,19 +9,20 @@ interface ICustomer {
 }
 
 export default class Customer {
+  private _id: string
+  private _name: string
+  private _email: string
   private _cpf: string
 
-  constructor(
-    private _id: string,
-    private _name: string,
-    private _email: string,
-    cpf: string,
-  ) {
+  constructor(id: string, name: string, email: string, cpf: string) {
+    this._id = id
+    this._name = name
+    this._email = email
     this._cpf = this.cpfValidate(cpf)
   }
 
   static factory(customer: ICustomer) {
-    return new Customer(customer.id, customer.name, customer.email, customer.cpf)
+    return new Customer(customer.id || "", customer.name, customer.email, customer.cpf)
   }
 
   //getter

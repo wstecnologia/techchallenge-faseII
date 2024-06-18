@@ -5,14 +5,15 @@ import Pagination from "@/core/shared/pagination/Pagination"
 import PageResponse from "@/core/shared/pagination/PageResponse"
 import AppErros from "@/core/shared/error/AppErros"
 import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
+import { ICustomerUserCase } from "./ICustormerUserCase"
 
-export default class CustomerUseCase {
+export default class CustomerUseCase implements ICustomerUserCase {
   constructor(
     private customerRepository: ICustomerRepository,
     private iGenerator: IdGenerator,
   ) {}
 
-  async registerCustomer(newCustomers: Customer): Promise<Customer> {
+  async registerCustomer(newCustomers: any): Promise<any> {
     const cpf = newCustomers.cpf.replace(/\D/g, "")
     if (!cpf) {
       throw new AppErros(ErrosMessage.INFORM_NUMBER_CPF)
@@ -32,7 +33,13 @@ export default class CustomerUseCase {
     })
 
     await this.customerRepository.save(newCustomer)
-    return newCustomer
+
+    return {
+      id: newCustomer.id,
+      cpf: newCustomer.cpf,
+      email: newCustomer.email,
+      name: newCustomer.name,
+    }
   }
 
   async listAllCustomers(page: number): Promise<PageResponse<Customer>> {
