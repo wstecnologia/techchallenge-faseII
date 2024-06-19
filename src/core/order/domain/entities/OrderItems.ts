@@ -4,7 +4,7 @@ import ErrosMessage from "@/core/shared/error/ErrosMessage"
 export default class OrderItems {
   private _id: string
   private _quantity: number
-  private _dataCreated: string
+  private _dataCreated: Date
 
   constructor(
     private _numberOrder: number,
@@ -15,7 +15,7 @@ export default class OrderItems {
     private _active: boolean,
   ) {
     this._quantity = this.validateQuantity(quantity)
-    this._dataCreated = new Date().toLocaleString()
+    this._dataCreated = new Date()
   }
 
   //getters

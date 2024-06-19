@@ -1,11 +1,17 @@
 import OrderController from "@/adapters/in/controllers/Order/OrderController"
 import ExpressAdapter from "../ExpressAdapter"
+import OrderRepository from "@/adapters/out/persistence/Order/OrderRepository"
+import Id from "@/adapters/out/persistence/generateID/Id"
 
 export default class OrderRoutes {
-  private router: any
-
-  constructor(router: any) {
+  private _orderRepository: OrderRepository
+  private _idGenerator: Id
+  private _orderController: OrderController
+  constructor(private router: any) {
     this.router = router
+    this._orderRepository = new OrderRepository()
+    this._idGenerator = new Id()
+    this._orderController = new OrderController(this._orderRepository, this._idGenerator)
     this.initiazeRoutes()
   }
 
@@ -17,11 +23,11 @@ export default class OrderRoutes {
   }
 
   private async newOrder({ body }) {
-    return await OrderController.addOrder(body)
+    return await this._orderController.addOrder(body)
   }
 
   private async listAllOrders({ query }) {
-    return await OrderController.listAllOrders(query.page)
+    return await this._orderController.listAllOrders(query.page)
   }
 
   private async addPaymentOrders() {
@@ -29,6 +35,6 @@ export default class OrderRoutes {
   }
 
   private async finalizeOrder({ query }) {
-    return await OrderController.finalizeOrder(query.orderId)
+    return await this._orderController.finalizeOrder(query.orderId)
   }
 }

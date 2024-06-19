@@ -2,14 +2,14 @@ import Category from "@/core/category/domain/entities/Category"
 import ICategoryRepository from "@/core/category/ports/out/ICategoryRepository"
 import AppErrors from "@/core/shared/error/AppErrors"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
-import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
+import { IIdGenerator } from "@/core/shared/GeneratorID/IIdGenerator"
 import PageResponse from "@/core/shared/pagination/PageResponse"
 import Pagination from "@/core/shared/pagination/Pagination"
 
 export default class CategoryUseCase {
   constructor(
     private categoryRepository: ICategoryRepository,
-    private idGenerator: IdGenerator,
+    private idGenerator: IIdGenerator,
   ) {}
 
   async findById(id: string): Promise<Category> {

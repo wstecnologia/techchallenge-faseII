@@ -4,17 +4,17 @@ import Pagination from "@/core/shared/pagination/Pagination"
 import PageResponse from "@/core/shared/pagination/PageResponse"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
 import AppErrors from "@/core/shared/error/AppErrors"
-import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
+import { IIdGenerator } from "@/core/shared/GeneratorID/IIdGenerator"
 import { Payment } from "@/core/payment/domain/entities/Payment"
 import OrderItems from "../entities/OrderItems"
 
 export default class OrderUseCase {
   constructor(
     private _orderRepository: OrderRepository,
-    private _idGenerator: IdGenerator,
+    private _idGenerator: IIdGenerator,
   ) {}
 
-  async addOrder(order: Order): Promise<object | null> {
+  async addOrder(order: any): Promise<object | null> {
     const orderNumber = await this._orderRepository.numberOrder()
     const orderId = this._idGenerator.gerar()
 

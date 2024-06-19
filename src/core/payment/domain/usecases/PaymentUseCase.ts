@@ -3,7 +3,7 @@ import PaymentRepository from "../../ports/out/IPaymentRepository"
 import { Payment } from "../entities/Payment"
 import { QRCode } from "../value-objects/QRCode"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
-import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
+import { IIdGenerator } from "@/core/shared/GeneratorID/IidGenerator"
 export default class PaymentUseCase {
   constructor(private paymentRepository: PaymentRepository) {}
 

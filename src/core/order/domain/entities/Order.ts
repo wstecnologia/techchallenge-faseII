@@ -13,7 +13,7 @@ interface IOrder {
 
 export default class Order {
   private _id?: string
-  private _dataCreated: string
+  private _dataCreated: Date
   private _customerId: string
   private _payments: Payment
   private _situationId?: string
@@ -29,7 +29,7 @@ export default class Order {
   ) {
     this._id = id
     this._payments = payment
-    this._dataCreated = new Date().toLocaleString()
+    this._dataCreated = new Date()
     this._situationId = this.validateSituation(situationId)
     this._customerId = this.validateCustomer(customerId)
   }

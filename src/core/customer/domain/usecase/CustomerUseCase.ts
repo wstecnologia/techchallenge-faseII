@@ -4,12 +4,12 @@ import ICustomerRepository from "../../ports/out/CustomerRepository"
 import Pagination from "@/core/shared/pagination/Pagination"
 import PageResponse from "@/core/shared/pagination/PageResponse"
 import AppErrors from "@/core/shared/error/AppErrors"
-import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
+import { IIdGenerator } from "@/core/shared/GeneratorID/IIdGenerator"
 
 export default class CustomerUseCase {
   constructor(
     private customerRepository: ICustomerRepository,
-    private iGenerator: IdGenerator,
+    private iGenerator: IIdGenerator,
   ) {}
 
   async registerCustomer(newCustomers: any): Promise<any> {
