@@ -1,18 +1,16 @@
 import CategoryController from "@/adapters/in/controllers/Category/CategoryController"
-import CategoryRepository from "@/adapters/out/persistence/Category/CategoryRepository"
-import CategoryUseCase from "@/core/category/domain/usecases/CategoryUseCase"
+import ICategorysitory from "@/core/category/ports/out/ICategoryRepository"
+import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
 import ExpressAdapter from "../ExpressAdapter"
-import Id from "@/adapters/out/persistence/generateID/Id"
 class CategoryRoutes {
   private router: any
   private categoryController: CategoryController
+  private categoryRepository: ICategorysitory
+  private idGenerator: IdGenerator
 
   constructor(router: any) {
     this.router = router
-    const categoryRepository = new CategoryRepository()
-    const idGenerator = new Id()
-    const categoryUserCase = new CategoryUseCase(categoryRepository, idGenerator)
-    this.categoryController = new CategoryController(categoryUserCase)
+    this.categoryController = new CategoryController(this.categoryRepository, this.idGenerator)
     this.initializeRoutes()
   }
 
@@ -29,7 +27,6 @@ class CategoryRoutes {
 
   private async findById({ query }: { query: any }) {
     const { id } = query
-    console.log(`id : ${id}`)
     return this.categoryController.findById(id.toString())
   }
 
@@ -43,5 +40,4 @@ class CategoryRoutes {
     await this.categoryController.delete(id)
   }
 }
-
 export default CategoryRoutes

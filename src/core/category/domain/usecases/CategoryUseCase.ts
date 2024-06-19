@@ -20,7 +20,7 @@ export default class CategoryUseCase {
     return category
   }
 
-  async registerCategory(category: Category): Promise<void> {
+  async registerCategory(category: any): Promise<void> {
     const existingCategory = await this.categoryRepository.findById(category.id)
 
     if (existingCategory) {
