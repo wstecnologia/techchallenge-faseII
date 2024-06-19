@@ -1,18 +1,19 @@
 // CustomerRoutes.ts
 import CustomerController from "@/adapters/in/controllers/Customer/CustomerController"
-import ExpressAdapter from "../ExpressAdapter"
-import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
+import CustomerRepository from "@/adapters/out/persistence/Customer/CustomerRepository"
 import ICustomerRepository from "@/core/customer/ports/out/CustomerRepository"
+import { IIdGenerator } from "@/core/shared/GeneratorID/IidGenerator"
+import ExpressAdapter from "../ExpressAdapter"
 
 class CustomersRoutes {
   private router: any
   private customerController: CustomerController
   private customerRepository: ICustomerRepository
-  private idGenerator: IdGenerator
+  private idGenerator: IIdGenerator
 
   constructor(router: any) {
     this.router = router
-
+    this.customerRepository = new CustomerRepository()
     this.customerController = new CustomerController(this.customerRepository, this.idGenerator)
     this.initializeRoutes()
   }

@@ -93,8 +93,8 @@ export const productPath = {
             schema: {
               properties: {
                 id: {
-                  type: "number",
-                  example: 12345,
+                  type: "string",
+                  example: "6fe91206-0df7-4ee6-8610-2c5266294ef1",
                 },
                 name: {
                   type: "string",
@@ -104,9 +104,9 @@ export const productPath = {
                   type: "string",
                   example: "Descrição do produto",
                 },
-                category: {
+                categoryId: {
                   type: "string",
-                  example: "Categoria do produto",
+                  example: "131bf57b-e926-4f0b-954d-0eb472a82973",
                 },
                 price: {
                   type: "number",

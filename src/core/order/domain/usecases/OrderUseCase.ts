@@ -1,17 +1,17 @@
-import Order from "../entities/Order"
-import OrderRepository from "../../ports/out/OrderRepository"
-import Pagination from "@/core/shared/pagination/Pagination"
-import PageResponse from "@/core/shared/pagination/PageResponse"
-import ErrosMessage from "@/core/shared/error/ErrosMessage"
-import AppErrors from "@/core/shared/error/AppErrors"
-import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
 import { Payment } from "@/core/payment/domain/entities/Payment"
+import AppErrors from "@/core/shared/error/AppErrors"
+import ErrosMessage from "@/core/shared/error/ErrosMessage"
+import { IIdGenerator } from "@/core/shared/GeneratorID/IidGenerator"
+import PageResponse from "@/core/shared/pagination/PageResponse"
+import Pagination from "@/core/shared/pagination/Pagination"
+import OrderRepository from "../../ports/out/OrderRepository"
+import Order from "../entities/Order"
 import OrderItems from "../entities/OrderItems"
 
 export default class OrderUseCase {
   constructor(
     private _orderRepository: OrderRepository,
-    private _idGenerator: IdGenerator,
+    private _idGenerator: IIdGenerator,
   ) {}
 
   async addOrder(order: Order): Promise<object | null> {

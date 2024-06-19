@@ -1,15 +1,15 @@
-import Customer from "../entities/Customer"
-import ErrosMessage from "@/core/shared/error/ErrosMessage"
-import ICustomerRepository from "../../ports/out/CustomerRepository"
-import Pagination from "@/core/shared/pagination/Pagination"
-import PageResponse from "@/core/shared/pagination/PageResponse"
 import AppErrors from "@/core/shared/error/AppErrors"
-import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
+import ErrosMessage from "@/core/shared/error/ErrosMessage"
+import { IIdGenerator } from "@/core/shared/GeneratorID/IidGenerator"
+import PageResponse from "@/core/shared/pagination/PageResponse"
+import Pagination from "@/core/shared/pagination/Pagination"
+import ICustomerRepository from "../../ports/out/CustomerRepository"
+import Customer from "../entities/Customer"
 
 export default class CustomerUseCase {
   constructor(
     private customerRepository: ICustomerRepository,
-    private iGenerator: IdGenerator,
+    private iGenerator: IIdGenerator,
   ) {}
 
   async registerCustomer(newCustomers: any): Promise<any> {

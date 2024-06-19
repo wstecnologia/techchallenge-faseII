@@ -4,13 +4,11 @@ import db from "../DB/db"
 
 export default class ProductRepository implements IProductRepository {
   async registerProduct(product: Product): Promise<void> {
-    const productId = product.id
-
     await db.query(
       `INSERT INTO product (id, name, description, price, categoryid, image)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
+       VALUES ($1, $2, $3, $4, $5, $6)`,
       [
-        productId,
+        product.id,
         product.name,
         product.description,
         product.price,
@@ -21,35 +19,28 @@ export default class ProductRepository implements IProductRepository {
   }
 
   async countProducts(): Promise<number> {
-    const qtde = await db.oneOrNone(`SELECT count(*) AS total FROM product WHERE active = true`)
-    if (!qtde) return 0
-
-    return qtde.total
+    const result = await db.oneOrNone(`SELECT count(*) AS total FROM product WHERE active = true`)
+    return result ? result.total : 0
   }
 
-  async findById(productId: string): Promise<Product> {
+  async findById(productId: string): Promise<Product | null> {
     const query = "SELECT * FROM product WHERE id = $1 AND active = true"
     const result = await db.oneOrNone(query, [productId])
-    if (!result) {
-      return null
-    }
-    return result
+    return result ? Product.factory(result) : null
   }
 
-  async findByCategory(categoryid: string, page: number = 0): Promise<Product[]> {
-    const query = `SELECT * FROM product WHERE categoryid = $1 AND active = true LIMIT 10
-    OFFSET(${page - 1} * 10)`
-
-    const result = await db.any(query, [categoryid])
-
-    return result
+  async findByCategory(categoryId: string, page: number = 1): Promise<Product[]> {
+    const query = `SELECT * FROM product WHERE categoryid = $1 AND active = true LIMIT 10 OFFSET($2)`
+    const offset = (page - 1) * 10
+    const result = await db.any(query, [categoryId, offset])
+    return result.map((row: any) => Product.factory(row))
   }
 
-  async listAll(page: number = 0): Promise<Product[]> {
-    const products: Product[] = await db.any(
-      `SELECT * FROM product WHERE active = true LIMIT 10 OFFSET(${page - 1} * 10)`,
-    )
-    return products
+  async listAll(page: number = 1): Promise<Product[]> {
+    const query = `SELECT * FROM product WHERE active = true LIMIT 10 OFFSET($1)`
+    const offset = (page - 1) * 10
+    const result = await db.any(query, [offset])
+    return result.map((row: any) => Product.factory(row))
   }
 
   async delete(productId: string): Promise<void> {
@@ -62,10 +53,10 @@ export default class ProductRepository implements IProductRepository {
                    SET name = $1,
                        description = $2,
                        price = $3,
-                       categoryId = $4,
+                       categoryid = $4,
                        image = $5
-                   WHERE id = $6 AND active = true`
-
+                       active = $6
+                   WHERE id = $7`
     await db.none(query, [
       product.name,
       product.description,
@@ -73,6 +64,7 @@ export default class ProductRepository implements IProductRepository {
       product.categoryId,
       product.image,
       product.id,
+      product.activite,
     ])
   }
 }

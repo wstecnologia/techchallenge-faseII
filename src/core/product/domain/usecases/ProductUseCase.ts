@@ -1,6 +1,6 @@
 import AppErrors from "@/core/shared/error/AppErrors"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
-import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
+import { IIdGenerator } from "@/core/shared/GeneratorID/IidGenerator"
 import PageResponse from "@/core/shared/pagination/PageResponse"
 import Pagination from "@/core/shared/pagination/Pagination"
 import IProductRepository from "../../ports/out/IProductRepository"
@@ -9,7 +9,7 @@ import Product from "../entities/Product"
 export default class ProductUseCase {
   constructor(
     private productRepository: IProductRepository,
-    private idGenerator: IdGenerator,
+    private idGenerator: IIdGenerator,
   ) {}
 
   async registerProduct(product: any): Promise<void> {
@@ -63,6 +63,10 @@ export default class ProductUseCase {
   }
 
   async listAllProducts(page: number): Promise<PageResponse<Product>> {
+    if (page <= 0) {
+      throw new AppErrors(ErrosMessage.ENTER_PAGE_VALID, 404)
+    }
+
     const products = await this.productRepository.listAll(page)
     const totalProducts: number = await this.productRepository.countProducts()
     const totalPages = Math.ceil(totalProducts / 10)
