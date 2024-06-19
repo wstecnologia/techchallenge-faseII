@@ -1,15 +1,17 @@
 import CategoryController from "@/adapters/in/controllers/Category/CategoryController"
+import CategoryRepository from "@/adapters/out/persistence/Category/CategoryRepository"
 import ICategorysitory from "@/core/category/ports/out/ICategoryRepository"
 import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
 import ExpressAdapter from "../ExpressAdapter"
 class CategoryRoutes {
   private router: any
-  private categoryController: CategoryController
   private categoryRepository: ICategorysitory
+  private categoryController: CategoryController
   private idGenerator: IdGenerator
 
   constructor(router: any) {
     this.router = router
+    this.categoryRepository = new CategoryRepository()
     this.categoryController = new CategoryController(this.categoryRepository, this.idGenerator)
     this.initializeRoutes()
   }

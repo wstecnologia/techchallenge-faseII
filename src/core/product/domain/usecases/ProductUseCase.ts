@@ -12,7 +12,7 @@ export default class ProductUseCase {
     private idGenerator: IdGenerator,
   ) {}
 
-  async registerProduct(product: Product): Promise<void> {
+  async registerProduct(product: any): Promise<void> {
     const existingProduct = await this.productRepository.findById(product.id)
     if (existingProduct) {
       throw new Error(ErrosMessage.PRODUTO_JA_EXISTE)
@@ -83,7 +83,7 @@ export default class ProductUseCase {
     return this.productRepository.delete(productId)
   }
 
-  async updateProduct(product: Product): Promise<void> {
+  async updateProduct(product: any): Promise<void> {
     await this.productRepository.updateProduct(product)
   }
 }

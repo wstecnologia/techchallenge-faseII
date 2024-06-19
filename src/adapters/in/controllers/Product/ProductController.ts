@@ -1,47 +1,42 @@
-import ProductRepository from "@/adapters/out/persistence/Product/ProductRepository"
-import Id from "@/adapters/out/persistence/generateID/Id"
-import Product from "@/core/product/domain/entities/Product"
 import ProductUseCase from "@/core/product/domain/usecases/ProductUseCase"
 import PageResponse from "@/core/shared/pagination/PageResponse"
+import IProductDTO from "../../dtos/productDto"
 
 export default class ProductController {
-  private productRepository: ProductRepository
-  private productUseCase: ProductUseCase
-  private idGenerator: Id
-  constructor() {
-    this.productRepository = new ProductRepository()
-    this.idGenerator = new Id()
-    this.productUseCase = new ProductUseCase(this.productRepository, this.idGenerator)
+  constructor(
+    _productRepository,
+    _idGenerator,
+    private _productUseCase = new ProductUseCase(_productRepository, _idGenerator),
+  ) {}
+
+  async registerProduct(product: IProductDTO): Promise<void> {
+    await this._productUseCase.registerProduct(product)
   }
 
-  async registerProduct(product: Product): Promise<void> {
-    await this.productUseCase.registerProduct(product)
-  }
-
-  async findById(productId: string): Promise<Product[]> {
-    const product = await this.productUseCase.findById(productId)
+  async findById(productId: string): Promise<IProductDTO[]> {
+    const product = await this._productUseCase.findById(productId)
     return [product]
   }
 
-  async findByCategory(categoryId: string, page: number): Promise<PageResponse<Product>> {
-    return await this.productUseCase.findByCategory(categoryId, page)
+  async findByCategory(categoryId: string, page: number): Promise<PageResponse<IProductDTO>> {
+    return await this._productUseCase.findByCategory(categoryId, page)
   }
 
-  async listAll(page: number): Promise<Product[]> {
-    const products = await this.productUseCase.listAll(page)
+  async listAll(page: number): Promise<IProductDTO[]> {
+    const products = await this._productUseCase.listAll(page)
     return products
   }
 
-  async listAllProducts(page: number): Promise<PageResponse<Product>> {
-    const products = await this.productUseCase.listAllProducts(page)
+  async listAllProducts(page: number): Promise<PageResponse<IProductDTO>> {
+    const products = await this._productUseCase.listAllProducts(page)
     return products
   }
 
   async delete(productId: string): Promise<void> {
-    await this.productUseCase.delete(productId)
+    await this._productUseCase.delete(productId)
   }
 
-  async updateProduct(product: Product): Promise<void> {
-    await this.productUseCase.updateProduct(product)
+  async updateProduct(product: IProductDTO): Promise<void> {
+    await this._productUseCase.updateProduct(product)
   }
 }

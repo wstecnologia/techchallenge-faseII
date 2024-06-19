@@ -1,13 +1,19 @@
 import ProductController from "@/adapters/in/controllers/Product/ProductController"
+import ProductRepository from "@/adapters/out/persistence/Product/ProductRepository"
+import IProductRepository from "@/core/product/ports/out/IProductRepository"
+import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
 import ExpressAdapter from "../ExpressAdapter"
 
 class ProductRoutes {
   private router: any
+  private productRepository: IProductRepository
   private productController: ProductController
+  private idGenerator: IdGenerator
 
   constructor(router: any) {
     this.router = router
-    this.productController = new ProductController()
+    this.productRepository = new ProductRepository()
+    this.productController = new ProductController(this.productRepository, this.idGenerator)
     this.initializeRoutes()
   }
 

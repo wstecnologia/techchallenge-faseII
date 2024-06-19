@@ -1,4 +1,3 @@
-import CategoryRepository from "@/adapters/out/persistence/Category/CategoryRepository"
 import Id from "@/adapters/out/persistence/generateID/Id"
 import CategoryUseCase from "@/core/category/domain/usecases/CategoryUseCase"
 import PageResponse from "@/core/shared/pagination/PageResponse"
@@ -6,7 +5,7 @@ import ICategoryDTO from "../../dtos/categoryDto"
 
 export default class CategoryController {
   constructor(
-    _categoryRepository = new CategoryRepository(),
+    _categoryRepository,
     _idGenerator = new Id(),
     private _categoryUseCase = new CategoryUseCase(_categoryRepository, _idGenerator),
   ) {}
