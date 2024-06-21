@@ -59,7 +59,7 @@ export default class Order {
     return this._number
   }
 
-  get dataCreated(): string {
+  get dataCreated(): Date {
     return this._dataCreated
   }
 

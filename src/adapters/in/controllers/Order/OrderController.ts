@@ -18,15 +18,15 @@ export default class OrderController {
     const returnOrder = await this._orderUseCase.addOrder(order)
 
     if (returnOrder) {
-      Timer.timePreparation()
-      Timer.timeReady()
+      //Timer.timePreparation()
+      //Timer.timeReady()
     }
 
     return returnOrder
   }
 
-  async listAllOrders(page: number) {
-    return await this._orderUseCase.listAllOrders(page)
+  async listAllOrders(page: number, limit: number) {
+    return await this._orderUseCase.listAllOrders(page, limit)
   }
 
   async finalizeOrder(orderId: number): Promise<object | null> {

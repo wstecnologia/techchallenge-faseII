@@ -27,7 +27,7 @@ export default class OrderRoutes {
   }
 
   private async listAllOrders({ query }) {
-    return await this._orderController.listAllOrders(query.page)
+    return await this._orderController.listAllOrders(query.page, query.limit)
   }
 
   private async addPaymentOrders() {

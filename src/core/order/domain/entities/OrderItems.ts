@@ -47,7 +47,7 @@ export default class OrderItems {
     return this._active
   }
 
-  get dataCreated(): string {
+  get dataCreated(): Date {
     return this._dataCreated
   }
 

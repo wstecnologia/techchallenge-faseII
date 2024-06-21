@@ -7,6 +7,7 @@ import AppErrors from "@/core/shared/error/AppErrors"
 import { IIdGenerator } from "@/core/shared/GeneratorID/IIdGenerator"
 import { Payment } from "@/core/payment/domain/entities/Payment"
 import OrderItems from "../entities/OrderItems"
+import { IOrderUseCaseDto } from "../../ports/in/OrderUseCaseDto"
 
 export default class OrderUseCase {
   constructor(
@@ -65,29 +66,17 @@ export default class OrderUseCase {
     }
   }
 
-  async listAllOrders(page: number): Promise<PageResponse<Order>> {
+  async listAllOrders(page: number, limit: number): Promise<PageResponse<any> | null> {
     if (page <= 0) {
       throw new AppErrors(ErrosMessage.ENTER_PAGE_VALID, 404)
     }
-    const orders = await this._orderRepository.listAllOrders(page)
-    const totalOrders: number = await this._orderRepository.countOrders()
-    const totalPages = Math.ceil(totalOrders / 10)
+    const result = await this._orderRepository.listAllOrders(page, limit)
 
-    if (orders.length === 0) {
+    if (result.items.length === 0) {
       throw new AppErrors(ErrosMessage.LIST_NOT_LOCALIZED, 404)
     }
 
-    const pagination: Pagination = {
-      currentPage: page,
-      totalPage: totalPages,
-      totalItems: Number(totalOrders),
-      itemsPerPage: 10,
-    }
-
-    return {
-      pagination,
-      items: orders,
-    }
+    return PageResponse.responseList(result.items, result.totalItems, page, limit)
   }
 
   async updateStatus(orderId: number, status: string) {
