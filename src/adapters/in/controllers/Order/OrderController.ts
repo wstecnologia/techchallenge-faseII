@@ -1,38 +1,55 @@
-import OrderRepository from "@/adapters/out/persistence/Order/OrderRepository"
-import Id from "@/adapters/out/persistence/generateID/Id"
 import Order from "@/core/order/domain/entities/Order"
-import OrderUseCase from "@/core/order/domain/usecases/OrderUseCase"
+import IOrderRepository from "@/core/order/ports/out/OrderRepository"
+import { IIdGenerator } from "@/core/shared/GeneratorID/IIdGenerator"
 import { Timer } from "@/core/shared/Timer"
-
-const orderRepository = new OrderRepository()
-const idGenerator = new Id()
-const orderUseCase = new OrderUseCase(orderRepository, idGenerator)
+import { IOrderDto } from "../../dtos/orderDto"
+import { createOrder } from "@/core/order/domain/usecases/CreateOrder"
+import { ListAllOrders } from "@/core/order/domain/usecases/ListAllOrders"
+import { UpdateStatusOrder } from "@/core/order/domain/usecases/UpdateStatusOrder"
+import { FinalizeOrder } from "@/core/order/domain/usecases/FinalizeOrder"
+import ConsultStatusOrder from "@/core/order/domain/usecases/ConsultStatusOrder"
 
 export default class OrderController {
-  static async addOrder(order: Order) {
-    const returnOrder = await orderUseCase.addOrder(order)
+  private _createOrder: createOrder
+  private _listAllOrder: ListAllOrders
+  private _updateStatusOrder: UpdateStatusOrder
+  private _finalizeOrder: FinalizeOrder
+  private _consultStatusOrder: ConsultStatusOrder
+  constructor(
+    private _orderRepository: IOrderRepository,
+    private _idGenerator: IIdGenerator,
+  ) {
+    this._createOrder = new createOrder(this._orderRepository, this._idGenerator)
+    this._listAllOrder = new ListAllOrders(this._orderRepository)
+    this._updateStatusOrder = new UpdateStatusOrder(this._orderRepository)
+    this._finalizeOrder = new FinalizeOrder(this._orderRepository)
+    this._consultStatusOrder = new ConsultStatusOrder(this._orderRepository)
+  }
+
+  async addOrder(order: IOrderDto) {
+    const returnOrder = await this._createOrder.execute(order)
 
     if (returnOrder) {
-      Timer.timePreparation()
-      Timer.timeReady()
+      //Timer.timePreparation()
+      //Timer.timeReady()
     }
 
     return returnOrder
   }
 
-  static async listAllOrders(page: number) {
-    return await orderUseCase.listAllOrders(page)
+  async listAllOrders(page: number, limit: number) {
+    return await this._listAllOrder.execute(page, limit)
   }
 
-  static async finalizeOrder(orderId: number): Promise<object | null> {
-    return await orderUseCase.finalizeOrder(orderId)
+  async finalizeOrder(orderId: number): Promise<object | null> {
+    return await this._finalizeOrder.execute(orderId)
   }
 
-  static async updateStatus(orderId: number, status: string) {
-    await orderUseCase.updateStatus(orderId, status)
+  async updateStatus(orderId: number, status: string) {
+    await this._updateStatusOrder.execute(orderId, status)
   }
 
-  static async consultStatus(status: string): Promise<Order | null> {
-    return await orderUseCase.consultStatus(status)
+  async consultStatus(status: string): Promise<Order | null> {
+    return await this._consultStatusOrder.execute(status)
   }
 }

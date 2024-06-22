@@ -1,5 +1,6 @@
 import Order from "@/core/order/domain/entities/Order"
 import IOrderRepository from "@/core/order/ports/out/OrderRepository"
+import { IResponseListDto } from "@/core/shared/dto/ResponseListDto"
 import db from "../DB/db"
 
 export default class OrderRepository implements IOrderRepository {
@@ -11,7 +12,7 @@ export default class OrderRepository implements IOrderRepository {
 
   async findOrderByStatus(status: string): Promise<Order | null> {
     const order = await db.oneOrNone(
-      `SELECT * FROM orders where situationid = $1 
+      `SELECT * FROM orders where situationid = $1
       order by updated_at desc limit 1`,
       [status],
     )
@@ -38,9 +39,12 @@ export default class OrderRepository implements IOrderRepository {
     )
   }
 
-  async listAllOrders(page: number = 0): Promise<Order[] | null> {
-    const orders: Order[] = await db.any(
+  async listAllOrders(page: number = 1, limit = 10): Promise<IResponseListDto | null> {
+    const OFFSET = limit * (page - 1)
+
+    const orders = await db.any(
       `SELECT
+        COUNT(*) OVER() AS total_count,
         o.number,
         o.datacreated,
         o.observation,
@@ -48,12 +52,14 @@ export default class OrderRepository implements IOrderRepository {
         c.name customerName
       FROM orders o
         inner join situations s on s.id = o.situationid
-        inner join customers c on c.id = o.customerid 
+        inner join customers c on c.id = o.customerid
       order by o.updated_at desc
-      LIMIT 10 
-      OFFSET(${page - 1} * 10)`,
+      LIMIT ${limit} OFFSET ${OFFSET}`,
     )
-    return orders
+    return {
+      items: orders,
+      totalItems: orders[0].total_count,
+    }
   }
 
   async createdOrder(order: Order): Promise<number | null> {

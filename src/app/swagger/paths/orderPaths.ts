@@ -87,6 +87,15 @@ export const orderPaths = {
             type: "number",
           },
         },
+        {
+          name: "limit",
+          in: "query",
+          description: "Limit per page",
+          default: 10,
+          schema: {
+            type: "number",
+          },
+        },
       ],
       responses: {
         200: {

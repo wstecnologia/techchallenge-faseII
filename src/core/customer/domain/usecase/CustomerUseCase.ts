@@ -1,10 +1,11 @@
 import AppErrors from "@/core/shared/error/AppErrors"
+
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
-import { IIdGenerator } from "@/core/shared/GeneratorID/IidGenerator"
 import PageResponse from "@/core/shared/pagination/PageResponse"
 import Pagination from "@/core/shared/pagination/Pagination"
 import ICustomerRepository from "../../ports/out/CustomerRepository"
 import Customer from "../entities/Customer"
+import { IIdGenerator } from "@/core/shared/GeneratorID/IIdGenerator"
 
 export default class CustomerUseCase {
   constructor(

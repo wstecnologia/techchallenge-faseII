@@ -2,7 +2,7 @@ import Category from "@/core/category/domain/entities/Category"
 import ICategoryRepository from "@/core/category/ports/out/ICategoryRepository"
 import AppErrors from "@/core/shared/error/AppErrors"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
-import { IIdGenerator } from "@/core/shared/GeneratorID/IidGenerator"
+import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
 import PageResponse from "@/core/shared/pagination/PageResponse"
 import Pagination from "@/core/shared/pagination/Pagination"
 

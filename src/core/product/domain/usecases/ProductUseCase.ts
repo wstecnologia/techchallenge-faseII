@@ -1,14 +1,14 @@
+import ProductRepository from "@/adapters/out/persistence/Product/ProductRepository"
 import AppErrors from "@/core/shared/error/AppErrors"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
-import { IIdGenerator } from "@/core/shared/GeneratorID/IidGenerator"
+import { IIdGenerator } from "@/core/shared/GeneratorID/IIdGenerator"
 import PageResponse from "@/core/shared/pagination/PageResponse"
 import Pagination from "@/core/shared/pagination/Pagination"
-import IProductRepository from "../../ports/out/IProductRepository"
 import Product from "../entities/Product"
 
 export default class ProductUseCase {
   constructor(
-    private productRepository: IProductRepository,
+    private productRepository: ProductRepository,
     private idGenerator: IIdGenerator,
   ) {}
 
