@@ -21,7 +21,7 @@ export default class CustomerUseCase {
     const existingCustomer = await this.customerRepository.findByCpf(cpf)
 
     if (existingCustomer) {
-      throw new AppErrors(ErrosMessage.USUARIO_JA_EXISTE)
+      throw new AppErrors(ErrosMessage.USER_ALREADY_EXISTS)
     }
 
     const newCustomer = Customer.factory({
@@ -75,7 +75,7 @@ export default class CustomerUseCase {
     }
 
     const returnValidation = await this.customerRepository.findByCpf(_cpf)
-    if (!returnValidation) throw new AppErrors(ErrosMessage.USUARIO_NAO_LOCALIZADO, 401)
+    if (!returnValidation) throw new AppErrors(ErrosMessage.USER_NOT_LOCATED, 401)
 
     return returnValidation
   }

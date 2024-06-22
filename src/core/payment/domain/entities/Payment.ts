@@ -17,7 +17,6 @@ export class Payment {
     this._date = new Date()
   }
 
-  //getters
   get id(): string {
     return this._id
   }
@@ -37,7 +36,6 @@ export class Payment {
     return this._amount
   }
 
-  //setters
   set id(value: string) {
     this._id = value
   }

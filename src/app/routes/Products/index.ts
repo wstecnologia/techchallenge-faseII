@@ -1,11 +1,10 @@
 import ProductController from "@/adapters/in/controllers/Product/ProductController"
 import Id from "@/adapters/out/persistence/generateID/Id"
 import ProductRepository from "@/adapters/out/persistence/Product/ProductRepository"
-import IProductRepository from "@/core/product/ports/out/IProductRepository"
 import ExpressAdapter from "../ExpressAdapter"
 
 class ProductRoutes {
-  private _productRepository: IProductRepository
+  private _productRepository: ProductRepository
   private _productController: ProductController
   private _idGenerator: Id
 

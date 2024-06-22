@@ -1,12 +1,11 @@
 import CategoryController from "@/adapters/in/controllers/Category/CategoryController"
 import CategoryRepository from "@/adapters/out/persistence/Category/CategoryRepository"
 import Id from "@/adapters/out/persistence/generateID/Id"
-import ICategoryRepository from "@/core/category/ports/out/ICategoryRepository"
 import { IIdGenerator } from "@/core/shared/GeneratorID/IidGenerator"
 import ExpressAdapter from "../ExpressAdapter"
 
 class CategoryRoutes {
-  private _categoryRepository: ICategoryRepository
+  private _categoryRepository: CategoryRepository
   private _categoryController: CategoryController
   private _idGenerator: IIdGenerator
 

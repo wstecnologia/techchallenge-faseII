@@ -15,7 +15,7 @@ export default class ProductUseCase {
   async registerProduct(product: any): Promise<void> {
     const existingProduct = await this.productRepository.findById(product.id)
     if (existingProduct) {
-      throw new Error(ErrosMessage.PRODUTO_JA_EXISTE)
+      throw new Error(ErrosMessage.PRODUCT_ALREADY_EXISTS)
     }
 
     const newProduct = Product.factory({
@@ -33,7 +33,7 @@ export default class ProductUseCase {
 
   async findById(productId: string): Promise<Product> {
     const product = await this.productRepository.findById(productId)
-    if (!product) throw new AppErrors(ErrosMessage.PRODUTO_NAO_LOCALIZADO, 400)
+    if (!product) throw new AppErrors(ErrosMessage.PRODUCT_NOT_LOCALIZED, 400)
     return product
   }
 
@@ -41,7 +41,7 @@ export default class ProductUseCase {
     const products = await this.productRepository.findByCategory(categoryId, page)
 
     if (!products) {
-      throw new AppErrors(ErrosMessage.PRODUTO_NAO_LOCALIZADO)
+      throw new AppErrors(ErrosMessage.PRODUCT_NOT_LOCALIZED)
     }
 
     const totalProducts: number = await this.productRepository.countProducts()
