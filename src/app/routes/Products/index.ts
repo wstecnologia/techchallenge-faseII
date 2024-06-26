@@ -37,13 +37,13 @@ class ProductRoutes {
   }
 
   private async findByCategory({ query }: { query: any }) {
-    const { category, page } = query
-    return this._productController.findByCategory(category.toString(), Number(page))
+    const { category, page, limit } = query
+    return this._productController.findByCategory(category.toString(), Number(page), Number(limit))
   }
 
   private async listAll({ query }: { query: any }) {
-    const { page } = query
-    return this._productController.listAllProducts(Number(page))
+    const { page, limit } = query
+    return this._productController.listAll(Number(page), Number(limit))
   }
 
   private async delete({ query }: { query: any }) {

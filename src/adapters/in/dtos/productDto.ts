@@ -4,6 +4,6 @@ export default interface IProductDTO {
   price: number
   categoryId: string
   image: string
-  activite: boolean
+  active: boolean
   id: string
 }

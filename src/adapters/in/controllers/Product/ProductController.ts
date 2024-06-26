@@ -1,46 +1,60 @@
-import ProductUseCase from "@/core/product/domain/usecases/ProductUseCase"
-import IProductRepository from "@/core/product/ports/out/IProductRepository"
-import { IIdGenerator } from "@/core/shared/GeneratorID/IidGenerator"
+import ProductRepository from "@/adapters/out/persistence/Product/ProductRepository"
+import CretateProductUseCase from "@/core/product/domain/usecases/CreateProductUseCase"
+import DeleteProductUseCase from "@/core/product/domain/usecases/DeleteCategoryUseCase"
+import FindProductUseCase from "@/core/product/domain/usecases/FindProductUseCase"
+import ListProductUseCase from "@/core/product/domain/usecases/ListProductUseCase"
+import UpdateProductUseCase from "@/core/product/domain/usecases/UpdateProductUseCase"
+import { IResponseListDto } from "@/core/shared/dto/ResponseListDto"
+import { IIdGenerator } from "@/core/shared/GeneratorID/IIdGenerator"
 import PageResponse from "@/core/shared/pagination/PageResponse"
-import IProductDTO from "../../dtos/productDto"
+import IProductDTO from "../../dtos/ProductDto"
 
 export default class ProductController {
-  private _productUseCase: ProductUseCase
+  private _cretateProductUseCase: CretateProductUseCase
+  private _findProductUseCase: FindProductUseCase
+  private _listProductUseCase: ListProductUseCase
+  private _deleteProductUseCase: DeleteProductUseCase
+  private _updateProductUseCase: UpdateProductUseCase
   constructor(
-    private _productRepository: IProductRepository,
+    private _productRepository: ProductRepository,
     private _idGenerator: IIdGenerator,
   ) {
-    this._productUseCase = new ProductUseCase(this._productRepository, this._idGenerator)
+    this._cretateProductUseCase = new CretateProductUseCase(
+      this._productRepository,
+      this._idGenerator,
+    )
+    this._findProductUseCase = new FindProductUseCase(this._productRepository)
+    this._listProductUseCase = new ListProductUseCase(this._productRepository)
+    this._deleteProductUseCase = new DeleteProductUseCase(this._productRepository)
   }
 
   async registerProduct(product: IProductDTO): Promise<void> {
-    await this._productUseCase.registerProduct(product)
+    await this._cretateProductUseCase.execute(product)
   }
 
   async findById(productId: string): Promise<IProductDTO[]> {
-    const product = await this._productUseCase.findById(productId)
+    const product = await this._findProductUseCase.findById(productId)
     return [product]
   }
 
-  async findByCategory(categoryId: string, page: number): Promise<PageResponse<IProductDTO>> {
-    return await this._productUseCase.findByCategory(categoryId, page)
+  async findByCategory(
+    categoryId: string,
+    page: number,
+    limit: number,
+  ): Promise<PageResponse<IResponseListDto>> {
+    return await this._findProductUseCase.findByCategory(categoryId, page, limit)
   }
 
-  async listAll(page: number): Promise<IProductDTO[]> {
-    const products = await this._productUseCase.listAll(page)
-    return products
-  }
-
-  async listAllProducts(page: number): Promise<PageResponse<IProductDTO>> {
-    const products = await this._productUseCase.listAllProducts(page)
+  async listAll(page: number, limit): Promise<PageResponse<IResponseListDto>> {
+    const products = await this._listProductUseCase.listAll(page, limit)
     return products
   }
 
   async delete(productId: string): Promise<void> {
-    await this._productUseCase.delete(productId)
+    await this._deleteProductUseCase.execute(productId)
   }
 
   async updateProduct(product: IProductDTO): Promise<void> {
-    await this._productUseCase.updateProduct(product)
+    await this._updateProductUseCase.execute(product)
   }
 }

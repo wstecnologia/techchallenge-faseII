@@ -7,7 +7,7 @@ interface IProduct {
   price: number
   categoryId: string
   image: string
-  activite: boolean
+  active: boolean
   id: string
 }
 export default class Product {
@@ -17,7 +17,7 @@ export default class Product {
   private _price: number
   private _categoryId: string
   private _image: string
-  private _activite: boolean
+  private _active: boolean
 
   constructor(
     name: string,
@@ -25,7 +25,7 @@ export default class Product {
     price: number,
     categoryId: string,
     image: string,
-    activite: boolean,
+    active: boolean,
     id: string,
   ) {
     this._id = id
@@ -35,7 +35,7 @@ export default class Product {
     this.setPrice(price)
     this.setCategoryId(categoryId)
     this.setImage(image)
-    this.setActivite(activite)
+    this.setActive(active)
   }
 
   static factory(product: IProduct): Product {
@@ -45,7 +45,7 @@ export default class Product {
       product.price,
       product.categoryId,
       product.image,
-      product.activite,
+      product.active,
       product.id,
     )
   }
@@ -74,8 +74,8 @@ export default class Product {
     return this._image
   }
 
-  get activite(): boolean {
-    return this._activite
+  get active(): boolean {
+    return this._active
   }
 
   private setName(value: string) {
@@ -104,8 +104,8 @@ export default class Product {
     this._image = value
   }
 
-  private setActivite(value: boolean) {
-    this._activite = value
+  private setActive(value: boolean) {
+    this._active = value
   }
 
   updatePrice(newPrice: number) {

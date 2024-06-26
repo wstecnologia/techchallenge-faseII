@@ -1,7 +1,7 @@
 import CategoryController from "@/adapters/in/controllers/Category/CategoryController"
 import CategoryRepository from "@/adapters/out/persistence/Category/CategoryRepository"
 import Id from "@/adapters/out/persistence/generateID/Id"
-import { IIdGenerator } from "@/core/shared/GeneratorID/IidGenerator"
+import { IIdGenerator } from "@/core/shared/GeneratorID/IIdGenerator"
 import ExpressAdapter from "../ExpressAdapter"
 
 class CategoryRoutes {
@@ -21,6 +21,7 @@ class CategoryRoutes {
     this._router.get("/categories/id", ExpressAdapter.adaptRoute(this.findById.bind(this)))
     this._router.get("/categories", ExpressAdapter.adaptRoute(this.listAll.bind(this)))
     this._router.delete("/categories", ExpressAdapter.adaptRoute(this.deleteCategory.bind(this)))
+    this._router.put("/categories", ExpressAdapter.adaptRoute(this.updateCategory.bind(this)))
   }
 
   private async registerCategory({ body }: { body: any }) {
@@ -33,13 +34,17 @@ class CategoryRoutes {
   }
 
   private async listAll({ query }: { query: any }) {
-    const { page } = query
-    return this._categoryController.listAllCategories(Number(page))
+    const { page, limit } = query
+    return this._categoryController.listAllCategories(Number(page), Number(limit))
   }
 
   private async deleteCategory({ query }: { query: any }) {
     const { id } = query
     await this._categoryController.delete(id)
+  }
+
+  private async updateCategory({ body }: { body: any }) {
+    return this._categoryController.updateCategory(body)
   }
 }
 export default CategoryRoutes

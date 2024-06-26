@@ -1,5 +1,6 @@
 import Category from "@/core/category/domain/entities/Category"
 import ICategoryRepository from "@/core/category/ports/out/ICategoryRepository"
+import { IResponseListDto } from "@/core/shared/dto/ResponseListDto"
 import db from "../DB/db"
 
 export default class CategoryRepository implements ICategoryRepository {
@@ -19,12 +20,22 @@ export default class CategoryRepository implements ICategoryRepository {
     }
     return result
   }
-
-  public async listAll(page: number = 1): Promise<Category[] | null> {
-    const categories: Category[] = await db.any(
-      `SELECT * FROM category WHERE active = true LIMIT 10 OFFSET(${page - 1} * 10)`,
+  public async listAll(page: number = 1, limit = 10): Promise<IResponseListDto | null> {
+    const OFFSET = limit * (page - 1)
+    const categories = await db.any(
+      `SELECT COUNT(*) OVER() AS total, * FROM category WHERE active = true
+         LIMIT ${limit} OFFSET ${OFFSET}`,
     )
-    return categories
+
+    return !categories || categories.length === 0
+      ? {
+          items: [],
+          totalItems: 0,
+        }
+      : {
+          items: categories,
+          totalItems: categories[0].total,
+        }
   }
 
   async countCategories(): Promise<number> {
@@ -37,5 +48,14 @@ export default class CategoryRepository implements ICategoryRepository {
   async delete(categoryId: string): Promise<void> {
     const query = `update category set actove = false WHERE id = $1)`
     await db.any(query, [categoryId])
+  }
+
+  async updateCategory(category: Category): Promise<void> {
+    const query = `UPDATE category
+                   SET name = $1,
+                       description = $2,
+                       active = $3
+                   WHERE id = $4`
+    await db.none(query, [category.name, category.description, category.active, category.id])
   }
 }

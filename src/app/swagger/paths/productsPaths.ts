@@ -15,18 +15,23 @@ export const productPath = {
                 },
                 description: {
                   type: "string",
-                  example: "Nome do produto",
+                  example: "Descrição do produto",
                 },
                 categoryId: {
                   type: "string",
-                  example: "Nome do produto",
+                  example: "131bf57b-e926-4f0b-954d-0eb472a82973",
                 },
                 price: {
                   type: "number",
+                  example: "35.50",
                 },
                 image: {
-                  type: "number",
-                  example: "Preço do produto a ser alterado ",
+                  type: "string",
+                  example: "image.jpg",
+                },
+                active: {
+                  type: "boolean",
+                  example: "true",
                 },
               },
             },
@@ -61,6 +66,15 @@ export const productPath = {
           description: "Page Number",
           required: true,
           default: 1,
+          schema: {
+            type: "number",
+          },
+        },
+        {
+          name: "limit",
+          in: "query",
+          description: "Limit per page",
+          default: 10,
           schema: {
             type: "number",
           },
@@ -118,7 +132,7 @@ export const productPath = {
                 },
                 active: {
                   type: "boolean",
-                  example: "Ativo/inativo.",
+                  example: "true",
                 },
               },
             },
@@ -199,6 +213,16 @@ export const productPath = {
           default: 1,
           schema: {
             type: "integer",
+          },
+        },
+
+        {
+          name: "limit",
+          in: "query",
+          description: "Limit per page",
+          default: 10,
+          schema: {
+            type: "number",
           },
         },
       ],

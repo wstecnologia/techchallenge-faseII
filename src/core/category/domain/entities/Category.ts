@@ -5,24 +5,24 @@ interface ICategory {
   name: string
   description?: string
   id?: string
-  activite: boolean
+  active: boolean
 }
 
 export default class Category {
   private _id: string
   private _name: string
   private _description: string
-  private _activite: boolean
+  private _active: boolean
 
-  constructor(name: string, description: string, activite: boolean, id?: string) {
+  constructor(name: string, description: string, active: boolean, id?: string) {
     this._name = name
     this.setId(id)
     this._description = description || ""
-    this._activite = activite
+    this._active = active
   }
 
   static factory(category: ICategory): Category {
-    return new Category(category.name, category.description || "", category.activite, category.id)
+    return new Category(category.name, category.description || "", category.active, category.id)
   }
 
   get id(): string {
@@ -37,8 +37,8 @@ export default class Category {
     return this._description
   }
 
-  get activite(): boolean {
-    return this._activite
+  get active(): boolean {
+    return this._active
   }
 
   private setId(id?: string) {

@@ -54,6 +54,15 @@ export const categoryPath = {
             type: "number",
           },
         },
+        {
+          name: "limit",
+          in: "query",
+          description: "Limit per page",
+          default: 10,
+          schema: {
+            type: "number",
+          },
+        },
       ],
       responses: {
         200: {
@@ -82,8 +91,8 @@ export const categoryPath = {
             schema: {
               properties: {
                 id: {
-                  type: "number",
-                  example: 12345,
+                  type: "string",
+                  example: " 131bf57b-e926-4f0b-954d-0eb472a82973",
                 },
                 name: {
                   type: "string",

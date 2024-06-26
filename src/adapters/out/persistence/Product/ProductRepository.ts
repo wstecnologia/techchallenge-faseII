@@ -1,5 +1,6 @@
 import Product from "@/core/product/domain/entities/Product"
 import IProductRepository from "@/core/product/ports/out/IProductRepository"
+import { IResponseListDto } from "@/core/shared/dto/ResponseListDto"
 import db from "../DB/db"
 
 export default class ProductRepository implements IProductRepository {
@@ -29,18 +30,46 @@ export default class ProductRepository implements IProductRepository {
     return result ? Product.factory(result) : null
   }
 
-  async findByCategory(categoryId: string, page: number = 1): Promise<Product[]> {
-    const query = `SELECT * FROM product WHERE categoryid = $1 AND active = true LIMIT 10 OFFSET($2)`
-    const offset = (page - 1) * 10
-    const result = await db.any(query, [categoryId, offset])
-    return result.map((row: any) => Product.factory(row))
+  async findByCategory(
+    categoryId: string,
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<IResponseListDto | null> {
+    const OFFSET = limit * (page - 1)
+    const products = await db.query(
+      `SELECT COUNT(*) OVER() AS total, * FROM product WHERE active = true
+        and categoryId = $1
+         LIMIT $2 OFFSET $3`,
+      [categoryId, limit, OFFSET],
+    )
+
+    return !products || products.length === 0
+      ? {
+          items: [],
+          totalItems: 0,
+        }
+      : {
+          items: products,
+          totalItems: products[0].total,
+        }
   }
 
-  async listAll(page: number = 1): Promise<Product[]> {
-    const query = `SELECT * FROM product WHERE active = true LIMIT 10 OFFSET($1)`
-    const offset = (page - 1) * 10
-    const result = await db.any(query, [offset])
-    return result.map((row: any) => Product.factory(row))
+  async listAll(page: number = 1, limit: number = 10): Promise<IResponseListDto | null> {
+    const offset = limit * (page - 1)
+    const products = await db.any(
+      `SELECT  COUNT(*) OVER() AS total, *
+         FROM product WHERE active = true LIMIT $1 OFFSET $2`,
+      [limit, offset],
+    )
+    return !products || products.length === 0
+      ? {
+          items: [],
+          totalItems: 0,
+        }
+      : {
+          items: products,
+          totalItems: products[0].total,
+        }
   }
 
   async delete(productId: string): Promise<void> {
@@ -64,7 +93,7 @@ export default class ProductRepository implements IProductRepository {
       product.categoryId,
       product.image,
       product.id,
-      product.activite,
+      product.active,
     ])
   }
 }
