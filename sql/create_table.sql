@@ -43,11 +43,11 @@ CREATE TABLE IF NOT EXISTS Product (
 create table IF NOT EXISTS Orders (
   id uuid NOT NULL primary key,
   number integer NOT NULL UNIQUE,
-  dataCreated timestamp NOT NULL,
   customerId uuid NOT NULL,
   situationId uuid NOT NULL,
   observation varchar(500) null,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  
+  created_at timestamp NOT NULL,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   foreign key (customerId) references Customers (id),
   foreign key (situationId) references Situations (id)
 );
@@ -60,7 +60,7 @@ create table IF NOT EXISTS OrdersItems (
 	productDescription varchar(255) not null,
 	productPrice float not null,
 	active boolean DEFAULT true,
-	dataCreated timestamp NOT NULL,
+	created_at timestamp NOT NULL,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   foreign key (productId) references Product (id),
   foreign key (numberOrder) references Orders (number)
@@ -78,6 +78,7 @@ CREATE TABLE IF NOT EXISTS payments (
 );
 
 insert into Situations (id, description ) values
+    ('cbf9b6ab-4c5c-4db9-a7f2-33e1e3bc3a91','Aguardando Pagamento'),
     ('9e07b6f1-c470-4318-8c1a-2441771b600e','Recebido'),
     ('f7f9ba46-ad25-4d10-a6aa-6c603aad6755','Em Preparação'),
     ('11729253-5280-4d6f-9619-53045076236e','Pronto'),
