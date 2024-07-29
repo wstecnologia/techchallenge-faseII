@@ -1,6 +1,10 @@
-import { PaymentStatus } from '@/adapters/in/dtos/paymentDto';
+import { inputPaymentDto } from '@/adapters/dtos/paymentDto';
 
-import Entity from "@/core/Domain/Entity";
+import { PaymentStatus } from '@/core/shared/constants/PaymentStatus';
+
+import Entity from '@/core/shared/Entity';
+
+
 import AppErrors from "@/core/shared/error/AppErrors";
 import ErrosMessage from "@/core/shared/error/ErrosMessage";
 
@@ -9,7 +13,7 @@ export class Payment extends Entity {
   private _amount: number
   private _status: PaymentStatus
 
-  constructor(props: inputPaymantDto, id?: string) {
+  constructor(props: inputPaymentDto, id?: string) {
     super(id)
     this._orderid = props.orderid
     this._amount = props.amount
