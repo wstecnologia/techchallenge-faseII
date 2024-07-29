@@ -10,7 +10,7 @@ Clone este repositório https://github.com/wstecnologia/techchallenge para o seu
 
 Renomeie o arquivo .env.example para .env e substitua pelo conteúdo enviado na documentação do projeto.
 
-Para iniciar a aplicação, execute o comando “docker compose up --build” (se for no linux pode ser necessário adicionar sudo antes do comando), aguarde o fim da criação das imagens para o docker rodar o script de criação/inserção das tabelas. (É necessário que o docker esteja instalado na máquina para o correto funcionamento)
+Para iniciar a aplicação, execute o comando “docker compose up --build”, aguarde o fim da criação das imagens para o docker rodar o script de criação/inserção das tabelas. (É necessário que o docker esteja instalado na máquina para o correto funcionamento)
 
 Após a execução do comando acima, o sistema será carregado, junto com suas dependências.
 Uso
@@ -59,3 +59,40 @@ As demais rodas seguem o fluxo normal conforme payloads e parâmetros.
 ### Observação:
 
 Na documentação é pedido que a identificação seja feita pelo CPF ou cadastro com nome e email. Porém, não vemos sentido a identificação pelo número do CPF se o mesmo não está no cadastro. Portanto colocamos como um item obrigatório.
+
+
+### Fase II
+
+Deploy de Kubernetes para LanchoneteWS
+Este documento fornece um guia passo a passo para implantar a aplicação lanchonetews em um cluster Kubernetes usando o Helm.
+
+Estrutura do Projeto
+kubernetes-chart/
+│
+├── Chart.yaml
+├── values.yaml
+└── templates/
+  ├── configmap-sql-scripts.yaml
+  ├── configmap.yaml
+  ├── deployment-adminer.yaml
+  ├── deployment-lanchonetews.yaml
+  ├── deployment-postgresql.yaml
+  ├── job-sql-runner.yaml
+  ├── pvc.yaml
+  ├── service-adminer.yaml
+  ├── service-postgresql.yaml
+  └── service-lanchonetews.yaml
+
+Visão Geral dos Arquivos Principais e Seus Propósitos
+Chart.yaml: Define o chart e seus metadados, como nome, versão e descrição.
+values.yaml: Contém valores de configuração padrão para o chart.
+configmap-sql-scripts.yaml: Armazena scripts SQL como configmaps para serem executados por um job.
+deployment-adminer.yaml: Configuração de deployment para o Adminer, uma ferramenta de gerenciamento de banco de dados.
+deployment-lanchonetews.yaml: Configuração de deployment para a aplicação lanchonetews.
+deployment-postgresql.yaml: Configuração de deployment para o banco de dados PostgreSQL.
+job-sql-runner.yaml: Um job para inicializar o schema do banco de dados usando os scripts SQL fornecidos.
+pvc.yaml: Configuração de Persistent Volume Claim para persistência de dados.
+service-adminer.yaml: Configuração de serviço para expor o Adminer.
+service-postgresql.yaml: Configuração de serviço para expor o PostgreSQL.
+service-lanchonetews.yaml: Configuração de serviço para expor a aplicação lanchonetews.
+Comandos para Implantar a Aplicação.
