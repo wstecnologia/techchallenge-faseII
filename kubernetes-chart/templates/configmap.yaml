@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lanchonetews-config
+data:
+  WS_DB_HOST: postgresql
+  WS_DB_USER: admin
+  WS_DB_PASSWORD: admin@123
+  WS_DB_NAME: lanchonete_ws

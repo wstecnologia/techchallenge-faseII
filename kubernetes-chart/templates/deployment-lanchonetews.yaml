@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lanchonetews
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lanchonetews
+  template:
+    metadata:
+      labels:
+        app: lanchonetews
+    spec:
+      containers:
+        - name: lanchonetews
+          image: "wilsongoncalves/techchallenge-faseii:latest"
+          ports:
+            - containerPort: {{ .Values.lanchonetews.service.port }}
+          env:
+            - name: WS_DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: lanchonetews-config
+                  key: WS_DB_HOST
+            - name: WS_DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: lanchonetews-config
+                  key: WS_DB_USER
+            - name: WS_DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: lanchonetews-config
+                  key: WS_DB_PASSWORD
+            - name: WS_DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: lanchonetews-config
+                  key: WS_DB_NAME

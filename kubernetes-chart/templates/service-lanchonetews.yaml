@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lanchonetews
+spec:
+  type: LoadBalancer
+  ports:
+    - port: {{ .Values.lanchonetews.service.port }}
+      targetPort: 3000
+  selector:
+    app: lanchonetews
