@@ -50,7 +50,7 @@ export class PaymentRepository implements IPaymentRepository {
   async getStatusPayment(orderId: number): Promise<OutputStatusPayment | null> {
     const statusPayment = await db.oneOrNone(
       `
-      Select o.number,p.orderid, p.status, p.amount from payments p
+      Select p.id paymentId, o.number orderNumber, p.orderid, p.status, p.amount from payments p
         inner join orders o on o.id=p.orderid
       where o.number = $1`,
       [orderId],
