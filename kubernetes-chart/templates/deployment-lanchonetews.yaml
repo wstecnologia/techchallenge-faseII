@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: lanchonetews
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
       app: lanchonetews
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: lanchonetews
-          image: "wilsongoncalves/techchallenge-faseii:latest"
+          image: "wstecnologia/techchallenge-faseii:latest"
           ports:
             - containerPort: {{ .Values.lanchonetews.service.port }}
           env:
