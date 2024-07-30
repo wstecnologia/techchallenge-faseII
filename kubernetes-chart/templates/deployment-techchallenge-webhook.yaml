@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: techchallenge-webhook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: techchallenge-webhook
+  template:
+    metadata:
+      labels:
+        app: techchallenge-webhook
+    spec:
+      containers:
+      - name: techchallenge-webhook
+        image: wstecnologia/tech-webhook:latest
+        ports:
+        - containerPort: 3001
+        resources:
+          limits:
+            cpu: "100m"
+            memory: "256Mi"

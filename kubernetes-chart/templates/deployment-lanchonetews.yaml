@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: lanchonetews
-          image: "wstecnologia/techchallenge-faseii:latest"
+          image: "wstecnologia/lanchonetews:latest"
           ports:
             - containerPort: {{ .Values.lanchonetews.service.port }}
           env:

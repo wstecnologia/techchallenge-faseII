@@ -83,6 +83,10 @@ kubernetes-chart/
   ├── service-postgresql.yaml
   └── service-lanchonetews.yaml
 
+Executar helm install para instalar o arquivos contidos na pasta kubernetes-chart:
+
+- helm install lanchonetews kubernetes-chart/
+
 Visão Geral dos Arquivos Principais e Seus Propósitos
 Chart.yaml: Define o chart e seus metadados, como nome, versão e descrição.
 values.yaml: Contém valores de configuração padrão para o chart.
@@ -95,4 +99,5 @@ pvc.yaml: Configuração de Persistent Volume Claim para persistência de dados.
 service-adminer.yaml: Configuração de serviço para expor o Adminer.
 service-postgresql.yaml: Configuração de serviço para expor o PostgreSQL.
 service-lanchonetews.yaml: Configuração de serviço para expor a aplicação lanchonetews.
-Comandos para Implantar a Aplicação.
+
+
