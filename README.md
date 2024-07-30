@@ -6,7 +6,10 @@ Este é um sistema de pedidos para uma lanchonete desenvolvido em NodeJs/TypeScr
 
 ### Configuração do Ambiente
 
-Clone este repositório https://github.com/wstecnologia/techchallenge para o seu computador (acessar a branch main).
+Clone este repositório
+  https://github.com/wstecnologia/techchallenge-faseII  para o seu computador (acessar a branch main).
+  e https://github.com/wstecnologia/tech-webhook (acessar a branch master)
+
 
 Renomeie o arquivo .env.example para .env e substitua pelo conteúdo enviado na documentação do projeto.
 
@@ -15,6 +18,8 @@ Para iniciar a aplicação, execute o comando “docker compose up --build”, a
 Após a execução do comando acima, o sistema será carregado, junto com suas dependências.
 Uso
 Acesse a documentação swagger da aplicação através do navegador web, digitando o endereço http://localhost:3000/api-docs/.
+e http://localhost:3001/api-docs/ para acessar o webhook
+
 
 ### Banco de Dados
 
@@ -99,5 +104,3 @@ pvc.yaml: Configuração de Persistent Volume Claim para persistência de dados.
 service-adminer.yaml: Configuração de serviço para expor o Adminer.
 service-postgresql.yaml: Configuração de serviço para expor o PostgreSQL.
 service-lanchonetews.yaml: Configuração de serviço para expor a aplicação lanchonetews.
-
-
