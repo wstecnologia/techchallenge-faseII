@@ -20,6 +20,10 @@ class PaymentRoutes {
   private initializeRoutes() {
     this._router.post("/payment", ExpressAdapter.adaptRoute(this.createPayment.bind(this)))
     this._router.put("/payment-status", ExpressAdapter.adaptRoute(this.updateStatus.bind(this)))
+    this._router.get(
+      "/payment-get-status",
+      ExpressAdapter.adaptRoute(this.getStatusPayment.bind(this)),
+    )
   }
 
   private async createPayment({ body }: { body: any }) {
@@ -29,6 +33,10 @@ class PaymentRoutes {
 
   private async updateStatus({ query }: { query: any }) {
     return this._paymentController.updateStatus(query.paymentId, query.status)
+  }
+
+  private async getStatusPayment({ query }: { query: any }) {
+    return this._paymentController.getStatusPayment(query.orderId)
   }
 }
 

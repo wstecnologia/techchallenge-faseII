@@ -39,28 +39,17 @@ export const paymentPath = {
       },
     },
   },
-
-  "/api/payment-status": {
-    put: {
+  "/api/payment-get-status": {
+    get: {
       tags: ["Payment"],
-      summary: "Edit status payment",
+      summary: "Get Status Payment of Order",
       parameters: [
         {
-          name: "paymentId",
+          name: "orderId",
           in: "query",
-          description: "Payment Id",
-          required: true,
+          description: "Number Order",
           schema: {
-            type: "string",
-          },
-        },
-        {
-          name: "status",
-          in: "query",
-          description: "Status Payment",
-          required: true,
-          schema: {
-            type: "string",
+            type: "number",
           },
         },
       ],
@@ -75,7 +64,7 @@ export const paymentPath = {
           description: "Invalid Access",
         },
         404: {
-          description: "Category not found",
+          description: "List of Orders not Localized",
         },
         500: {
           description: "Internal Server Error",

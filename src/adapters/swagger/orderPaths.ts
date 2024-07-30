@@ -107,6 +107,7 @@ export const orderPaths = {
       },
     },
   },
+
   "/api/orders/update-status": {
     put: {
       tags: ["Orders"],

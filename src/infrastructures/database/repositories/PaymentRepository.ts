@@ -1,10 +1,9 @@
 import IPaymentRepository from "@/core/adapters/interfaces/IPaymentRepository"
 import { Payment } from "@/core/entities/Payment"
+import { OutputStatusPayment } from "@/infrastructures/dtos/PaymentsDto"
 import db from "../config/PostgreSql"
 
 export class PaymentRepository implements IPaymentRepository {
-
-
   async save(payment: Payment): Promise<void> {
     await db.query(
       `INSERT INTO payments (id, orderid, amount, status, created_at, updated_at)
@@ -46,5 +45,19 @@ export class PaymentRepository implements IPaymentRepository {
     } catch (error) {
       return null
     }
+  }
+
+  async getStatusPayment(orderId: number): Promise<OutputStatusPayment | null> {
+    const statusPayment = await db.oneOrNone(
+      `
+      Select o.number,p.orderid, p.status, p.amount from payments p
+        inner join orders o on o.id=p.orderid
+      where o.number = $1`,
+      [orderId],
+    )
+    if (!statusPayment) {
+      return null
+    }
+    return statusPayment
   }
 }
