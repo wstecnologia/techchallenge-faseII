@@ -3,9 +3,10 @@ kind: Service
 metadata:
   name: adminer
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
     - port: {{ .Values.adminer.service.port }}
       targetPort: 8080
+      nodePort: 31080
   selector:
     app: adminer

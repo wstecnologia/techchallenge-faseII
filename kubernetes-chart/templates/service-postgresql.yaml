@@ -3,8 +3,10 @@ kind: Service
 metadata:
   name: postgresql
 spec:
+  type: NodePort
   ports:
     - port: {{ .Values.postgresql.port }}
       targetPort: 5432
+      nodePort: 30007
   selector:
     app: postgresql

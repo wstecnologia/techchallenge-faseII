@@ -47,3 +47,4 @@ lerna-debug.log*
 .env.example
 tsconfig.tsbuildinfo
 tsconfig.build.tsbuildinfo
+.vscode/launch.json

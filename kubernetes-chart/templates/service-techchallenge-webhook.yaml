@@ -6,7 +6,8 @@ spec:
   selector:
     app: techchallenge-webhook
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 3001
+    - protocol: TCP
+      port: 80
+      targetPort: 3001
+      nodePort: 30080
   type: NodePort

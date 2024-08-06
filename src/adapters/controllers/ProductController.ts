@@ -7,7 +7,8 @@ import FindProductUseCase from "@/core/useCases/product/FindProductUseCase"
 import ListProductUseCase from "@/core/useCases/product/ListProductUseCase"
 import UpdateProductUseCase from "@/core/useCases/product/UpdateProductUseCase"
 import ProductRepository from "@/infrastructures/database/repositories/ProductRepository"
-import IProductDTO from "../dtos/ProductDto"
+import IProductDTO from "../dtos/productDto"
+
 
 
 export default class ProductController {

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: lanchonetews
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
       app: lanchonetews
@@ -18,7 +18,7 @@ spec:
           ports:
             - containerPort: {{ .Values.lanchonetews.service.port }}
           env:
-            - name: WS_DB_HOST
+            - name: {{ .Values.lanchonetews.env.dbHost }}
               valueFrom:
                 configMapKeyRef:
                   name: lanchonetews-config

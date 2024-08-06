@@ -3,9 +3,10 @@ kind: Service
 metadata:
   name: lanchonetews
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
     - port: {{ .Values.lanchonetews.service.port }}
       targetPort: 3000
+      nodePort: 32000
   selector:
     app: lanchonetews
