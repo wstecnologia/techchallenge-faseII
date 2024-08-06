@@ -7,11 +7,10 @@ Este é um sistema de pedidos para uma lanchonete desenvolvido em NodeJs/TypeScr
 ### Configuração do Ambiente
 
 Clone este repositório
-  https://github.com/wstecnologia/techchallenge-faseII  para o seu computador (acessar a branch main).
-  e https://github.com/wstecnologia/tech-webhook (acessar a branch master)
+https://github.com/wstecnologia/techchallenge-faseII para o seu computador (acessar a branch main).
+e https://github.com/wstecnologia/tech-webhook (acessar a branch master)
 
-
-Renomeie o arquivo .env.example para .env e substitua pelo conteúdo enviado na documentação do projeto.
+Renomeie o arquivo .env.example para .env (para executar o projeto techchallenge-faseII) e substitua pelo conteúdo enviado na documentação do projeto.
 
 Para iniciar a aplicação, execute o comando “docker compose up --build”, aguarde o fim da criação das imagens para o docker rodar o script de criação/inserção das tabelas. (É necessário que o docker esteja instalado na máquina para o correto funcionamento)
 
@@ -19,7 +18,6 @@ Após a execução do comando acima, o sistema será carregado, junto com suas d
 Uso
 Acesse a documentação swagger da aplicação através do navegador web, digitando o endereço http://localhost:3000/api-docs/.
 e http://localhost:3001/api-docs/ para acessar o webhook
-
 
 ### Banco de Dados
 
@@ -37,7 +35,7 @@ O Payload para criar o pedido é composto pelos dados do pedido, itens do pedido
     "observation": "Teste geração de pedido",
     "items": [
         {
-            "productId":              "f9a20b1e-a926-42d7-85ff-91cde1b31a93",
+            "productId":"f9a20b1e-a926-42d7-85ff-91cde1b31a93",
             "productDescription": "Hambúrguer Clássico",
             "productPrice": 15.99,
             "quantity": 1
@@ -64,7 +62,6 @@ As demais rodas seguem o fluxo normal conforme payloads e parâmetros.
 ### Observação:
 
 Na documentação é pedido que a identificação seja feita pelo CPF ou cadastro com nome e email. Porém, não vemos sentido a identificação pelo número do CPF se o mesmo não está no cadastro. Portanto colocamos como um item obrigatório.
-
 
 ### Fase II
 
