@@ -29,7 +29,8 @@ lanchonetews:
   service:
     port: 3000
   env:
-    dbHost: postgresql
+    dbHost: postgresql  # Certifique-se de que está correto
+    dbPort: 5432
     dbUser: admin
     dbPassword: admin@123
     dbName: lanchonete_ws

@@ -18,7 +18,7 @@ spec:
           ports:
             - containerPort: {{ .Values.lanchonetews.service.port }}
           env:
-            - name: {{ .Values.lanchonetews.env.dbHost }}
+            - name: WS_DB_HOST
               valueFrom:
                 configMapKeyRef:
                   name: lanchonetews-config
@@ -38,3 +38,13 @@ spec:
                 configMapKeyRef:
                   name: lanchonetews-config
                   key: WS_DB_NAME
+            - name: WS_DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: lanchonetews-config
+                  key: WS_DB_PORT
+          readinessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
