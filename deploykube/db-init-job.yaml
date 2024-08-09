@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-init-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: db-init-container
+        image: postgres:latest
+        env:
+          - name: POSTGRES_HOST
+            value: postgresql
+          - name: POSTGRES_DB
+            value: lanchonete_ws
+          - name: POSTGRES_USER
+            value: admin
+          - name: POSTGRES_PASSWORD
+            value: admin@123
+        command: ["psql"]
+        args: ["-h", "postgresql", "-U", "admin", "-d", "lanchonete_ws", "-f", "/scripts/init-db.sql"]
+        volumeMounts:
+        - name: sql-scripts
+          mountPath: /scripts
+          subPath: init-db.sql
+      restartPolicy: OnFailure
+      volumes:
+        - name: sql-scripts
+          configMap:
+            name: sql-scripts-configmap
+  backoffLimit: 4
