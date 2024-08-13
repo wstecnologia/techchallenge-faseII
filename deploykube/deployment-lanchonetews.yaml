@@ -18,7 +18,7 @@ spec:
           ports:
             - containerPort: 3000
           env:
-            - name: WS_DB_HOST
+            - name: {{ .Values.lanchonetews.env.dbHost }}
               valueFrom:
                 configMapKeyRef:
                   name: lanchonetews-config

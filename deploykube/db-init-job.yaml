@@ -27,5 +27,5 @@ spec:
       volumes:
         - name: sql-scripts
           configMap:
-            name: sql-scripts-configmap
+            name: configmap-sql-scripts
   backoffLimit: 4

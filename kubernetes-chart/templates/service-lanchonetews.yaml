@@ -10,3 +10,17 @@ spec:
       nodePort: 32000
   selector:
     app: lanchonetews
+apiVersion: v1
+kind: Service
+metadata:
+  name: lanchonetews
+  labels:
+    app: lanchonetews
+spec:
+  selector:
+    app: lanchonetews
+  ports:
+    - protocol: TCP
+      port: 80  # Porta exposta pelo serviço
+      targetPort: 8080  # Porta onde o container está rodando
+  type: LoadBalancer  # Pode ser ClusterIP, NodePort, ou LoadBalancer dependendo do seu ambiente
