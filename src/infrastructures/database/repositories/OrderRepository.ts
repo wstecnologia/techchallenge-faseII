@@ -76,6 +76,11 @@ export default class OrderRepository implements IOrderRepository {
       o.updated_at
       LIMIT ${limit} OFFSET ${OFFSET}`,
     )
+    if (!orders || orders.length === 0)
+      return {
+        items: [],
+        totalItems: 0,
+      }
     return {
       items: orders,
       totalItems: orders[0].total_count,

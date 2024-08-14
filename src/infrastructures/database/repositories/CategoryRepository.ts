@@ -14,13 +14,22 @@ export default class CategoryRepository implements ICategoryRepository {
   }
 
   public async findById(categoryId: string): Promise<Category | null> {
-    const query = "SELECT * FROM category WHERE id = $1 and active = true"
+    const query = `
+        SELECT id, name, description, active
+        FROM category
+        WHERE active = true AND id = $1`
+
     const result = await db.oneOrNone(query, [categoryId])
+
     if (!result) {
       return null
     }
-    return result
+
+    const category = new Category(result.id, result.name, result.description, result.active)
+
+    return category
   }
+
   public async listAll(page: number = 1, limit = 10): Promise<IResponseListDto | null> {
     const OFFSET = limit * (page - 1)
     const categories = await db.any(
@@ -30,13 +39,13 @@ export default class CategoryRepository implements ICategoryRepository {
 
     return !categories || categories.length === 0
       ? {
-          items: [],
-          totalItems: 0,
-        }
+        items: [],
+        totalItems: 0,
+      }
       : {
-          items: categories,
-          totalItems: categories[0].total,
-        }
+        items: categories,
+        totalItems: categories[0].total,
+      }
   }
 
   async countCategories(): Promise<number> {

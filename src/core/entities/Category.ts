@@ -2,9 +2,9 @@ import AppErrors from "@/core/shared/error/AppErrors"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
 
 interface ICategory {
+  id?: string
   name: string
   description?: string
-  id?: string
   active: boolean
 }
 
@@ -15,8 +15,8 @@ export default class Category {
   private _active: boolean
 
   constructor(name: string, description: string, active: boolean, id?: string) {
-    this._name = name
     this.setId(id)
+    this._name = name
     this._description = description || ""
     this._active = active
   }

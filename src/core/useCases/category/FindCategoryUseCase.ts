@@ -4,7 +4,7 @@ import ErrosMessage from "@/core/shared/error/ErrosMessage"
 import Category from "../../entities/Category"
 
 export default class FindCategoryUseCase {
-  constructor(private _categoryRepository: ICategoryRepository) {}
+  constructor(private _categoryRepository: ICategoryRepository) { }
 
   async findById(id: string): Promise<Category> {
     const category = await this._categoryRepository.findById(id)

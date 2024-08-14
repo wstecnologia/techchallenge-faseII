@@ -8,7 +8,7 @@ export default class CreateCategoryUseCase {
   constructor(
     private _categoryRepository: ICategoryRepository,
     private _idGenerator: IIdGenerator,
-  ) {}
+  ) { }
 
   async execute(category: any): Promise<void> {
     const existingCategory = await this._categoryRepository.findById(category.id)
@@ -18,10 +18,10 @@ export default class CreateCategoryUseCase {
     }
 
     const newCategory = Category.factory({
+      id: this._idGenerator.gerar(),
       name: category.name,
       description: category.description,
       active: category.active,
-      id: this._idGenerator.gerar(),
     })
 
     await this._categoryRepository.registerCategory(newCategory)

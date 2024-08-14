@@ -5,7 +5,7 @@ import PageResponse from "@/core/shared/pagination/PageResponse"
 
 
 export class ListAllOrders {
-  constructor(private _orderRepository: IOrderRepository) {}
+  constructor(private _orderRepository: IOrderRepository) { }
 
   async execute(page: number, limit: number): Promise<PageResponse<any> | null> {
     if (page <= 0) {
