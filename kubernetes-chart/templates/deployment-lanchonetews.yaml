@@ -2,10 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: lanchonetews
-  labels:
-    app: lanchonetews
 spec:
-  replicas: 2  # Manter mais de 1 réplica para alta disponibilidade
+  replicas: 1
   selector:
     matchLabels:
       app: lanchonetews
@@ -15,41 +13,45 @@ spec:
         app: lanchonetews
     spec:
       containers:
-      - name: lanchonetews
-        image: wstecnologia/lanchonetews:latest
-        ports:
-        - containerPort: 8080  # Verifique se essa é a porta correta exposta pelo container
-        envFrom:
-        - configMapRef:
-            name: lanchonetews-config  # Referenciar um ConfigMap para variáveis de ambiente
-        resources:
-          requests:
-            memory: "256Mi"  # Solicitar recursos mínimos para garantir alocação
-            cpu: "500m"
-          limits:
-            memory: "512Mi"  # Limitar o uso máximo para evitar esgotamento de recursos
-            cpu: "1"
-        livenessProbe:
-          httpGet:
-            path: /healthz  # Path para checar a saúde do container
-            port: 8080
-          initialDelaySeconds: 10
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /ready  # Path para checar se o container está pronto para receber tráfego
-            port: 8080
-          initialDelaySeconds: 5
-          periodSeconds: 5
-        volumeMounts:
-        - name: config-volume
-          mountPath: /app/config  # Mapeamento do ConfigMap
-      volumes:
-      - name: config-volume
-        configMap:
-          name: lanchonetews-config  # Definição do ConfigMap
-
-  strategy:
-    rollingUpdate:
-      maxUnavailable: 1  # Controla a atualização progressiva para evitar downtime
-      maxSurge: 1
+        - name: lanchonetews
+          image: wstecnologia/lanchonetews:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: lanchonetews-config
+                  key: DB_HOST
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: lanchonetews-config
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: lanchonetews-config
+                  key: DB_PASSWORD
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: lanchonetews-config
+                  key: DB_DATABASE
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: lanchonetews-config
+                  key: DB_PORT
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          readinessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
