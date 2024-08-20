@@ -2,12 +2,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: techchallenge-webhook
+  labels:
+    app: techchallenge-webhook
 spec:
+  ports:
+    - port: 3001
+      targetPort: 3001
   selector:
     app: techchallenge-webhook
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 3001
-      nodePort: 30080
-  type: NodePort

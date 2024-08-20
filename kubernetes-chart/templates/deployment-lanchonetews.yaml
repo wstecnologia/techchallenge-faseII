@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: lanchonetews
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
       app: lanchonetews
@@ -43,15 +43,15 @@ spec:
                 configMapKeyRef:
                   name: lanchonetews-config
                   key: DB_PORT
-          resources:
-            requests:
-              memory: "256Mi"
-              cpu: "250m"
-            limits:
-              memory: "512Mi"
-              cpu: "500m"
           readinessProbe:
-            tcpSocket:
+            httpGet:
+              path: /healthz
               port: 3000
-            initialDelaySeconds: 10
+            initialDelaySeconds: 300
             periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+            initialDelaySeconds: 180
+            periodSeconds: 20
