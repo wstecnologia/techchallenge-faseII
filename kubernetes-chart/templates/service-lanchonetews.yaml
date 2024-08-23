@@ -3,10 +3,11 @@ kind: Service
 metadata:
   name: lanchonetews
   labels:
-    app: lanchonetews
+    app: lanchonetwsapp
 spec:
+  type: LoadBalancer
   ports:
     - port: 3000
       targetPort: 3000
   selector:
-    app: lanchonetews
+    app: lanchonetwsapp

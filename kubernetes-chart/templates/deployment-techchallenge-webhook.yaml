@@ -6,11 +6,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: techchallenge-webhook
+      app: lanchonetwsapp
   template:
     metadata:
       labels:
-        app: techchallenge-webhook
+        app: lanchonetwsapp
     spec:
       containers:
       - name: techchallenge-webhook
@@ -21,3 +21,14 @@ spec:
           limits:
             cpu: "100m"
             memory: "256Mi"
+        env:
+          - name: PORT
+            valueFrom:
+              configMapKeyRef:
+                name: lanchonetews-config
+                key: PORT
+          - name: HOST
+            valueFrom:
+              configMapKeyRef:
+                name: lanchonetews-config
+                key: HOST

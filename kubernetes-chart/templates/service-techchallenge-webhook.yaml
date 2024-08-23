@@ -3,10 +3,11 @@ kind: Service
 metadata:
   name: techchallenge-webhook
   labels:
-    app: techchallenge-webhook
+    app: lanchonetwsapp
 spec:
+  type: LoadBalancer
   ports:
     - port: 3001
       targetPort: 3001
   selector:
-    app: techchallenge-webhook
+    app: lanchonetwsapp

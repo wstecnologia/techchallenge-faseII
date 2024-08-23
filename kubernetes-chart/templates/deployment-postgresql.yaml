@@ -7,10 +7,12 @@ spec:
   selector:
     matchLabels:
       app: postgresql
+      appInstance: lanchonetwsapp
   template:
     metadata:
       labels:
         app: postgresql
+        appInstance: lanchonetwsapp
     spec:
       containers:
         - name: postgresql

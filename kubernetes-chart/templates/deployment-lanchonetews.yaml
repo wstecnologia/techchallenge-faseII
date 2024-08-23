@@ -3,14 +3,14 @@ kind: Deployment
 metadata:
   name: lanchonetews
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
-      app: lanchonetews
+      app: lanchonetwsapp
   template:
     metadata:
       labels:
-        app: lanchonetews
+        app: lanchonetwsapp
     spec:
       containers:
         - name: lanchonetews
@@ -33,7 +33,7 @@ spec:
                 configMapKeyRef:
                   name: lanchonetews-config
                   key: DB_PASSWORD
-            - name: DB_NAME
+            - name: DB_DATABASE
               valueFrom:
                 configMapKeyRef:
                   name: lanchonetews-config
@@ -43,15 +43,25 @@ spec:
                 configMapKeyRef:
                   name: lanchonetews-config
                   key: DB_PORT
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: lanchonetews-config
+                  key: PORT
+            - name: HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: lanchonetews-config
+                  key: HOST
           readinessProbe:
             httpGet:
               path: /healthz
               port: 3000
-            initialDelaySeconds: 300
-            periodSeconds: 5
+            initialDelaySeconds: 60
+            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /healthz
               port: 3000
-            initialDelaySeconds: 180
-            periodSeconds: 20
+            initialDelaySeconds: 120
+            periodSeconds: 30
