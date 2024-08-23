@@ -43,25 +43,26 @@ spec:
                 configMapKeyRef:
                   name: lanchonetews-config
                   key: DB_PORT
-            - name: PORT
+            - name: DB_PORT
               valueFrom:
                 configMapKeyRef:
                   name: lanchonetews-config
-                  key: PORT
-            - name: HOST
+                  key: DB_PORT
+            - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
                   name: lanchonetews-config
-                  key: HOST
-          readinessProbe:
-            httpGet:
-              path: /healthz
-              port: 3000
-            initialDelaySeconds: 60
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: 3000
-            initialDelaySeconds: 120
-            periodSeconds: 30
+                  key: DB_HOST
+          periodSeconds: 30
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 3000
+          #   initialDelaySeconds: 60
+          #   periodSeconds: 10
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 3000
+          #   initialDelaySeconds: 120
+          #   periodSeconds: 30
