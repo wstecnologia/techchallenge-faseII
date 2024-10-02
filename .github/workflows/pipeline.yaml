@@ -1,7 +1,7 @@
 name: CI - WSTECH
 
 on:
-  push:
+  pull_request:
     branches:
       - "**"
 
