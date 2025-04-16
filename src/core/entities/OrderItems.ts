@@ -1,6 +1,7 @@
 import AppErrors from "@/core/shared/error/AppErrors"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
 import Entity from "../shared/Entity"
+
 type ICreateOrderItems = {
   numberOrder: number
   quantity: number
@@ -11,18 +12,24 @@ type ICreateOrderItems = {
 }
 
 export default class OrderItems extends Entity {
-  private _quantity: number
+  private readonly _totalValueItem:number
 
   constructor(
-    private _numberOrder: number,
-    quantity: number,
-    private _productId: string,
-    private _productDescription: string,
-    private _productPrice: number,
-    private _active: boolean,
+    private readonly _numberOrder: number,
+    private readonly _quantity: number,
+    private readonly _productId: string,
+    private readonly _productDescription: string,
+    private readonly _productPrice: number,
+    private readonly _active: boolean,
   ) {
     super("")
-    this._quantity = this.validateQuantity(quantity)
+    this._numberOrder = _numberOrder
+    this._quantity = this.validateQuantity(_quantity)
+    this._productId = _productId
+    this._productDescription = _productDescription
+    this._productPrice = _productPrice
+    this._active = _active
+    this._totalValueItem = this.sumTotalValueItem()
   }
 
   static create(orderItens: ICreateOrderItems) {
@@ -36,7 +43,6 @@ export default class OrderItems extends Entity {
     )
   }
 
-  //getters
 
   get numberOrder(): number {
     return this._numberOrder
@@ -62,30 +68,12 @@ export default class OrderItems extends Entity {
     return this._active
   }
 
-  //setters
-
-  set numberOrder(value: number) {
-    this._numberOrder = value
+  get totalValueItem():number {
+    return this._totalValueItem
   }
 
-  set quantity(value: number) {
-    this._quantity = this.validateQuantity(value)
-  }
-
-  set productId(value: string) {
-    this._productId = value
-  }
-
-  set productDescription(value: string) {
-    this._productDescription = value
-  }
-
-  set productPrice(value: number) {
-    this._productPrice = value
-  }
-
-  set active(value: boolean) {
-    this._active = value
+  private sumTotalValueItem():number {
+    return this._quantity * this._productPrice
   }
 
   private validateQuantity(value: number): number {

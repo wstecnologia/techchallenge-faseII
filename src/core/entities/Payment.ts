@@ -7,16 +7,27 @@ import { PaymentStatus } from "../shared/constants/PaymentStatus"
 
 
 export class Payment extends Entity {
-  private _orderid: string
-  private _amount: number
-  private _status: PaymentStatus
 
-  constructor(props: inputPaymentDto, id?: string) {
-    super(id)
-    this._orderid = props.orderid
-    this._amount = props.amount
-    this._status = props.status
+  constructor(
+    _id:string,
+    private _orderid: string,
+    private _amount: number,
+    private _status: PaymentStatus
+  ) {
+    super(_id)
+    this._orderid = _orderid
+    this._amount = _amount
+    this._status = _status
     this.validate()
+  }
+
+  static create(props: inputPaymentDto): Payment {
+    return new Payment(
+      props.id || "",
+      props.orderid,
+      props.amount,
+      props.status
+    )
   }
 
   private validate(): void {
@@ -51,10 +62,18 @@ export class Payment extends Entity {
   }
 
   public failPayment(): void {
+
     if (this._status !== PaymentStatus.Pending) {
       throw new AppErrors(ErrosMessage.INVALID_PAYMENT_FAILURE_STATUS)
     }
     this._status = PaymentStatus.Failed
+  }
+
+  approved(status: string): void {
+    if (status !== PaymentStatus.Completed && status === PaymentStatus.Failed) {
+      throw new AppErrors(ErrosMessage.INVALID_PAYMENT_STATUS)
+    }
+    this._status = PaymentStatus.Completed
   }
 
   public isCompleted(): boolean {

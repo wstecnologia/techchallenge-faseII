@@ -12,12 +12,13 @@ export class CreatePaymentUseCase {
 
   async execute(orderId: string, amount: number): Promise<Payment> {
     const paymentDto: inputPaymentDto = {
+      id:this.idGenerator.gerar(),
       orderid: orderId,
       amount: amount,
       status: PaymentStatus.Pending,
     }
 
-    const payment = new Payment(paymentDto, this.idGenerator.gerar())
+    const payment = Payment.create(paymentDto)
 
     await this.paymentRepository.save(payment)
     return payment

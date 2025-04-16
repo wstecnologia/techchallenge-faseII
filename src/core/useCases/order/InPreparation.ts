@@ -2,7 +2,7 @@ import IOrderRepository from "@/core/adapters/interfaces/OrderRepository"
 import AppErrors from "@/core/shared/error/AppErrors"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
 
-export class FinalizeOrder {
+export class InPreparation {
   constructor(private _orderRepository: IOrderRepository) {}
 
   async execute(orderId: number): Promise<object | null> {
@@ -12,12 +12,11 @@ export class FinalizeOrder {
       throw new AppErrors(ErrosMessage.ORDER_NOT_FOUND, 404)
     }
 
-    order.finalize()
-
+    order.inPreparation()
 
     await this._orderRepository.updateOrderStatus(order)
     return {
-      message: "Order finalized of success!",
+      message: "Order in preparation of success!",
     }
   }
 }

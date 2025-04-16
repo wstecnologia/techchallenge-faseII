@@ -4,4 +4,6 @@ export enum OrderStatus {
   IN_PREPARATION = "f7f9ba46-ad25-4d10-a6aa-6c603aad6755",
   READY = "11729253-5280-4d6f-9619-53045076236e",
   FINISHED = "3f4798e6-1f03-411e-b99b-73833c104255",
+  PAYMENT_APPROVED = "Approved",
+  PAYMENT_NOT_APPROVED = "PaymentNotApproved"
 }

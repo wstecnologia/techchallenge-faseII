@@ -1,8 +1,6 @@
-import { inputPaymentDto, outputPaymentDto } from "@/core/adapters/dtos/PaymentDto"
+import { outputPaymentDto } from "@/core/adapters/dtos/PaymentDto"
 import IPaymentRepository from "@/core/adapters/interfaces/IPaymentRepository"
 import IOrderRepository from "@/core/adapters/interfaces/OrderRepository"
-import { Payment } from "@/core/entities/Payment"
-import { OrderStatus } from "@/core/shared/constants/OrderStatus"
 import { PaymentStatus } from "@/core/shared/constants/PaymentStatus"
 import AppErrors from "@/core/shared/error/AppErrors"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
@@ -19,26 +17,17 @@ export class UpdateStatusPaymentUseCase {
       throw new AppErrors(ErrosMessage.PAYMENT_NOT_FOUND)
     }
 
-    const paymentDto: inputPaymentDto = {
-      orderid: payment.orderid,
-      amount: payment.amount,
-      status: status,
-    }
-
-    const order = await this.orderRepository.findByOrderId(paymentDto.orderid)
-
+    const order = await this.orderRepository.findByOrderId(payment.orderid)
     if (!order) {
       throw new AppErrors(ErrosMessage.ORDER_NOT_FOUND)
     }
 
-    if (status !== PaymentStatus.Completed && status === PaymentStatus.Failed) {
-      throw new AppErrors(ErrosMessage.INVALID_PAYMENT_STATUS)
-    }
+    payment.approved(status)
+    order.approved(status)
 
-    const paymentEntity = new Payment(paymentDto, paymentId)
-    await this.paymentRepository.update(paymentEntity)
-    order.situationId = OrderStatus.RECEIVED
-    this.orderRepository.updateOrderStatus(order.number, order.situationId)
+
+    await this.paymentRepository.update(payment)
+    await this.orderRepository.updateOrderStatus(order)
 
     return {
       id: paymentId,
