@@ -1,5 +1,5 @@
-import { IResponseListDto } from "@/core/adapters/dtos/ResponseListDto"
 import Order from "../../entities/Order"
+import { IResponseListDto } from "../dtos/ResponseListDto"
 
 export default interface IOrderRepository {
   createdOrder(order: Order): Promise<number | null>

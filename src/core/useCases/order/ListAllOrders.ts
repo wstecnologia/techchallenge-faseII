@@ -13,9 +13,11 @@ export class ListAllOrders {
     }
     const result = await this._orderRepository.listAllOrders(page, limit)
 
-    if (result.items.length === 0) {
+    if (!result) {
       throw new AppErrors(ErrosMessage.LIST_NOT_LOCALIZED, 404)
     }
+
+
 
     return PageResponse.responseList(result.items, result.totalItems, page, limit)
   }
