@@ -1,0 +1,47 @@
+# Deployment para o serviço techchallenge-webhook
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: techchallenge-webhook-deployment
+  namespace: {{ .Values.global.namespace | default "lanchonetews" | quote }}
+  labels:
+    app: techchallenge-webhook
+spec:
+  replicas: {{ .Values.techchallengeWebhook.replicas | default 1 }}
+  selector:
+    matchLabels:
+      app: techchallenge-webhook
+  template:
+    metadata:
+      labels:
+        app: techchallenge-webhook
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+      containers:
+        - name: techchallenge-webhook
+          image: {{ .Values.techchallengeWebhook.image.repository }}:{{ .Values.techchallengeWebhook.image.tag | default "latest" }}
+          imagePullPolicy: {{ .Values.techchallengeWebhook.image.pullPolicy | default "IfNotPresent" }}
+          ports:
+            - name: webhook
+              containerPort: {{ .Values.techchallengeWebhook.service.port | default 3001 }}
+              protocol: TCP
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: webhook-config
+                  key: PORT
+            - name: HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: webhook-config
+                  key: HOST
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

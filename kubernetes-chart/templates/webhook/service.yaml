@@ -1,0 +1,23 @@
+# Service para expor o techchallenge-webhook
+apiVersion: v1
+kind: Service
+metadata:
+  name: techchallenge-webhook
+  namespace: {{ .Values.global.namespace | default "lanchonetews" | quote }}
+  labels:
+    app: techchallenge-webhook
+  annotations:
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
+    metallb.universe.tf/allow-shared-ip: "true"
+spec:
+  type: {{ .Values.techchallengeWebhook.service.type | default "NodePort" }}
+  ports:
+    - name: webhook
+      port: {{ .Values.techchallengeWebhook.service.port | default 3001 }}
+      targetPort: 3001
+      protocol: TCP
+      nodePort: {{ .Values.techchallengeWebhook.service.nodePort | default 30605 }}
+  selector:
+    app: techchallenge-webhook
+  externalTrafficPolicy: {{ .Values.techchallengeWebhook.service.externalTrafficPolicy | default "Cluster" }}

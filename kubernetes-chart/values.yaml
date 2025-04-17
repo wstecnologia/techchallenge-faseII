@@ -1,38 +1,37 @@
-replicaCount: 1
-
-image:
-  repository: lanchonetews
-  tag: latest
-  pullPolicy: IfNotPresent
-
-service:
-  type: NodePort
-  port: 3000
-
-postgresql:
-  image: postgres:latest
-  port: 5432
-  secret:
-    name: postgresql-secret
-  pvc:
-    storage: 1Gi
-
-adminer:
-  image: adminer
-  service:
-    port: 8080
-
-sqlRunner:
-  image: postgres:latest
+global:
+  namespace: "lanchonetews"
+  database:
+    dbUser: "admin"
+    dbPassword: "admin@123"
+    DB_DATABASE: "lanchonete_ws"
 
 lanchonetews:
+  replicas: 1
+  image:
+    repository: "wstecnologia/lanchonetews"
+    tag: "latest"
+    pullPolicy: "Always"
   service:
+    type: "NodePort"
     port: 3000
-  env:
-    dbHost: postgresql 
-    dbPort: 5432
-    dbUser: admin
-    dbPassword: admin@123
-    dbName: lanchonete_ws
 
-resources: {}
+
+techchallengeWebhook:
+  replicas: 1
+  image:
+    repository: "wstecnologia/techchallenge-webhook"
+    tag: "latest"
+    pullPolicy: "Always"
+  service:
+    type: "NodePort"
+    port: 3001
+    externalTrafficPolicy: Cluster
+
+postgresql:
+  image:
+    tag: "latest"
+  storage:
+    size: "1Gi"
+  credentials:
+    username: "postgres"
+    password: "postgres@123"

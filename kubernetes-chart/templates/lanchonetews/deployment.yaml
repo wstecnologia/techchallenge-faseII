@@ -1,0 +1,78 @@
+# deployment.yaml
+# Deployment para o serviço lanchonetews
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lanchonetews-deployment
+  namespace: {{ .Values.global.namespace | default "lanchonetews" | quote }}
+  labels:
+    app: lanchonetews
+spec:
+  replicas: {{ .Values.lanchonetews.replicas | default 1 }}
+  selector:
+    matchLabels:
+      app: lanchonetews
+  template:
+    metadata:
+      labels:
+        app: lanchonetews
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+      containers:
+        - name: lanchonetews
+          image: {{ .Values.lanchonetews.image.repository }}:{{ .Values.lanchonetews.image.tag | default "latest" }}
+          imagePullPolicy: {{ .Values.lanchonetews.image.pullPolicy | default "IfNotPresent" }}
+          ports:
+            - name: api
+              containerPort: {{ .Values.lanchonetews.service.port | default 3000 }}
+              protocol: TCP
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: lanchonetews-config
+                  key: PORT
+            - name: HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: lanchonetews-config
+                  key: HOST
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: lanchonetews-config
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: lanchonetews-config
+                  key: DB_PORT
+            - name: DB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: lanchonetews-config
+                  key: DB_DATABASE
+            - name: DB_DIALECT
+              valueFrom:
+                configMapKeyRef:
+                  name: lanchonetews-config
+                  key: DB_DIALECT
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: lanchonetews-db-credentials
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: lanchonetews-db-credentials
+                  key: DB_PASSWORD
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
