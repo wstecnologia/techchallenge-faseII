@@ -25,7 +25,12 @@ export class PaymentRepository implements IPaymentRepository {
     if (!payment) {
       return null
     }
-    return payment
+    return Payment.create({
+        id: payment.id,
+        orderid: payment.orderid,
+        amount: payment.amount,
+        status: payment.status,
+    })
   }
 
   async update(payment: Payment): Promise<Payment | null> {

@@ -5,6 +5,7 @@ import {
 import { IResponseListDto } from "@/core/adapters/dtos/ResponseListDto"
 import IOrderRepository from "@/core/adapters/interfaces/OrderRepository"
 import Order from "@/core/entities/Order"
+import OrderItems from "@/core/entities/OrderItems"
 import db from "../config/PostgreSql"
 
 export default class OrderRepository implements IOrderRepository {
@@ -16,8 +17,31 @@ export default class OrderRepository implements IOrderRepository {
 
   async findOrderByNumber(orderNumber: number): Promise<Order | null> {
     const order = await db.oneOrNone(`SELECT * FROM orders where number = $1 `, [orderNumber])
+    const orderItems = await db.any(
+      `SELECT * FROM ordersitems where numberorder = $1 order by created_at`,
+      [orderNumber],
+    )
 
-    return order
+    if (!order) {
+      return null
+    }
+
+    return Order.create({
+      number: order.number,
+      customerId: order.customerid,
+      items: orderItems.map((item) => {
+        return new OrderItems(
+          item.id,
+          item.productid,
+          item.productdescription,
+          item.quantity,
+          item.productprice,
+          item.active,
+        )
+      }),
+      situationId: order.situationid,
+      observation: order.observation,
+    })
   }
 
   async findOrderByStatus(status: string): Promise<Order | null> {
@@ -42,10 +66,10 @@ export default class OrderRepository implements IOrderRepository {
     return qtde.total
   }
 
-  async updateOrderStatus(numberOrder: number, status: string): Promise<object | null> {
+  async updateOrderStatus(order:Order): Promise<object | null> {
     return await db.query(
       `UPDATE orders SET situationId = $1, updated_at = CURRENT_TIMESTAMP WHERE number = $2`,
-      [status, numberOrder],
+      [order.situationId, order.number],
     )
   }
 
@@ -76,14 +100,44 @@ export default class OrderRepository implements IOrderRepository {
       o.updated_at
       LIMIT ${limit} OFFSET ${OFFSET}`,
     )
-    if (!orders || orders.length === 0)
-      return {
-        items: [],
-        totalItems: 0,
-      }
+
+    if(!orders) {
+      return null
+    }
+
+    const returnOrders = await Promise.all(
+      orders.map(async (order) => {
+        const items = await db.any(
+          "SELECT * FROM ordersitems WHERE numberorder = $1",
+          [order.number]
+        );
+
+        const orderItems = items.map((item) =>
+          OrderItems.create({
+            numberOrder: item.numberorder,
+            quantity: item.quantity,
+            productId: item.productid,
+            productDescription: item.productdescription,
+            productPrice: item.productprice,
+            active: item.active,
+          })
+        );
+
+        return Order.create({
+          number: order.number,
+          customerId: order.customerid,
+          situationId: order.situationid,
+
+          observation: order.observation,
+          items: orderItems,
+        });
+      })
+    );
+
     return {
-      items: orders,
-      totalItems: orders[0].total_count,
+      items:returnOrders,
+      totalItems:orders[0].total_count
+
     }
   }
 
@@ -102,9 +156,7 @@ export default class OrderRepository implements IOrderRepository {
     )
 
     for (let i = 0; i < order.items.length; i++) {
-      let item = order.items[i]
-      item.numberOrder = order.number
-      await this.addItem(item)
+      await this.addItem(order.items[i])
     }
 
     return order.number

@@ -27,6 +27,8 @@ const ErrosMessage = {
   INVALID_PAYMENT_FAILURE_STATUS: "Payment cannot be failed because it is not in pending status",
   PAYMENT_NOT_FOUND: "Payment not found",
   ORDER_NOT_FOUND: "Order not found",
+  CURRENT_STATE_NOT_CHANGES:"Current order status does not allow changes"
 } as const
 
 export default ErrosMessage
+

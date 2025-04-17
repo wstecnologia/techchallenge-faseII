@@ -6,7 +6,10 @@ export class UpdateStatusOrder {
   constructor(private _orderRepository: IOrderRepository) {}
 
   async execute(orderId: number, status: OrderStatus): Promise<IResponseMessageDto> {
-    await this._orderRepository.updateOrderStatus(orderId, status)
+
+    const order = await this._orderRepository.findOrderByNumber(orderId)
+
+    await this._orderRepository.updateOrderStatus(order)
     return {
       message: "Order updated successfully!",
     }
