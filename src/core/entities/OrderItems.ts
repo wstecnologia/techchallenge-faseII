@@ -12,15 +12,15 @@ type ICreateOrderItems = {
 }
 
 export default class OrderItems extends Entity {
-  private readonly _totalValueItem:number
+  private _totalValueItem:number
 
   constructor(
-    private readonly _numberOrder: number,
-    private readonly _quantity: number,
-    private readonly _productId: string,
-    private readonly _productDescription: string,
-    private readonly _productPrice: number,
-    private readonly _active: boolean,
+    private _numberOrder: number,
+    private _quantity: number,
+    private _productId: string,
+    private _productDescription: string,
+    private _productPrice: number,
+    private _active: boolean,
   ) {
     super("")
     this._numberOrder = _numberOrder
