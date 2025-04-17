@@ -126,9 +126,7 @@ export default class OrderRepository implements IOrderRepository {
     )
 
     for (let i = 0; i < order.items.length; i++) {
-      let item = order.items[i]
-      item.numberOrder = order.number
-      await this.addItem(item)
+      await this.addItem(order.items[i])
     }
 
     return order.number
