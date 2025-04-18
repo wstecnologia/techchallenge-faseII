@@ -27,8 +27,8 @@ class PaymentRoutes {
   }
 
   private async createPayment({ body }: { body: any }) {
-    const { orderId, amount } = body
-    return this._paymentController.createPayment(orderId, amount)
+    const { numberOrder, amount } = body
+    return this._paymentController.createPayment(numberOrder, amount)
   }
 
   private async updateStatus({ body }: { body: any }) {

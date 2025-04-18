@@ -183,4 +183,17 @@ export default class OrderRepository implements IOrderRepository {
     const retorno = await db.oneOrNone(`select coalesce(max( number),999) + 1 number from orders`)
     return retorno.number
   }
+
+  async findOrderIdByNumber(numberOrder: number): Promise<string | null> {
+
+    const result = await db.oneOrNone(
+        "SELECT id AS orderId FROM orders WHERE number = $1",
+        [numberOrder]
+    );
+    if (!result) {
+        return null;
+    }
+    return result.orderId
+  }
+
 }

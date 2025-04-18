@@ -9,8 +9,8 @@ export const paymentPath = {
             schema: {
               type: "object",
               properties: {
-                orderId: {
-                  type: "string",
+                numberOrder: {
+                  type: "number",
                 },
                 amount: {
                   type: "number",
@@ -45,7 +45,7 @@ export const paymentPath = {
       summary: "Get Status Payment of Order",
       parameters: [
         {
-          name: "orderId",
+          name: "numberOrder",
           in: "query",
           description: "Number Order",
           schema: {

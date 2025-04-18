@@ -19,13 +19,13 @@ export default class PaymentController {
     orderRepository: IOrderRepository,
     idGenerator: IIdGenerator,
   ) {
-    this._createPaymentUseCase = new CreatePaymentUseCase(paymentRepository, idGenerator)
+    this._createPaymentUseCase = new CreatePaymentUseCase(paymentRepository, idGenerator,orderRepository)
     this._updatePaymentUseCase = new UpdateStatusPaymentUseCase(paymentRepository, orderRepository)
     this._getStatusPaymentUseCase = new GetStatusPaymentUseCase(paymentRepository)
   }
 
-  async createPayment(orderId: string, amount: number): Promise<Payment> {
-    return await this._createPaymentUseCase.execute(orderId, amount)
+  async createPayment(numberOrder: number, amount: number): Promise<Payment> {
+    return await this._createPaymentUseCase.execute(numberOrder, amount)
   }
 
   async updateStatus(paymentId: string, status: PaymentStatus): Promise<outputPaymentDto> {
