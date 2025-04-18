@@ -1,0 +1,15 @@
+# ConfigMap para configurações do serviço lanchonetews
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lanchonetews-config
+  namespace: {{ .Values.global.namespace | default "lanchonetews" | quote }}
+  labels:
+    app: lanchonetews
+data:
+  PORT: "3000"
+  HOST: "0.0.0.0"
+  DB_HOST: "postgresql-service.{{ .Values.global.namespace | default "lanchonetews" }}.svc.cluster.local"
+  DB_PORT: "5432"
+  DB_DATABASE: {{ .Values.global.database.DB_DATABASE | default "lanchonete_ws" | quote }}
+  DB_DIALECT: "postgres"

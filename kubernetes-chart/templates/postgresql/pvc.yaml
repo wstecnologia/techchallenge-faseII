@@ -1,0 +1,15 @@
+# PersistentVolumeClaim para armazenamento do PostgreSQL
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql-pvc
+  namespace: {{ .Values.global.namespace | default "lanchonetews" }}
+  labels:
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/managed-by: Helm
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.postgresql.storage.size | default "1Gi" }}

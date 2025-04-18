@@ -1,0 +1,11 @@
+# ConfigMap para configurações do serviço techchallenge-webhook
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webhook-config
+  namespace: {{ .Values.global.namespace | default "lanchonetews" | quote }}
+  labels:
+    app: techchallenge-webhook
+data:
+  PORT: "3001"
+  HOST: "http://lanchonetews.{{ .Values.global.namespace | default "lanchonetews" }}.svc.cluster.local:3000/api"

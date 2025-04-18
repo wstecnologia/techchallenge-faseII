@@ -1,0 +1,18 @@
+# Service para o PostgreSQL
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql-service
+  namespace: {{ .Values.global.namespace | default "lanchonetews" }}
+  labels:
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+      targetPort: db
+      protocol: TCP
+      name: db
+  selector:
+    app.kubernetes.io/name: postgresql

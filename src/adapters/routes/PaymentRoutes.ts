@@ -31,12 +31,14 @@ class PaymentRoutes {
     return this._paymentController.createPayment(orderId, amount)
   }
 
-  private async updateStatus({ query }: { query: any }) {
-    return this._paymentController.updateStatus(query.paymentId, query.status)
+  private async updateStatus({ body }: { body: any }) {
+    const { paymentId, status } = body
+    return this._paymentController.updateStatus(paymentId, status)
   }
 
-  private async getStatusPayment({ query }: { query: any }) {
-    return this._paymentController.getStatusPayment(query.orderId)
+  private async getStatusPayment({ body }: { body: any }) {
+    const { orderId } = body
+    return this._paymentController.getStatusPayment(orderId)
   }
 }
 

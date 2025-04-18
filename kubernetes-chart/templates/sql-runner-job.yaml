@@ -1,0 +1,73 @@
+# Job para executar scripts SQL de inicialização
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sql-runner
+  namespace: {{ .Values.global.namespace | default "lanchonetews" }}
+  labels:
+    app.kubernetes.io/name: sql-runner
+    app.kubernetes.io/managed-by: Helm
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sql-runner
+    spec:
+      restartPolicy: OnFailure
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+      containers:
+        - name: sql-runner
+          image: postgres:{{ .Values.postgresql.image.tag | default "latest" }}
+          imagePullPolicy: Always
+          env:
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-secret
+                  key: POSTGRES_PASSWORD
+            - name: PGHOST
+              value: postgresql-service.{{ .Values.global.namespace | default "lanchonetews" }}.svc.cluster.local
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-secret
+                  key: POSTGRES_USER
+            - name: PGDATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-secret
+                  key: POSTGRES_DB
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "Waiting for PostgreSQL to be ready..."
+              for i in $(seq 1 60); do
+                if psql -h $PGHOST -U $PGUSER -d $PGDATABASE -c "SELECT 1;" > /dev/null 2>&1; then
+                  echo "PostgreSQL is ready!"
+                  break
+                fi
+                echo "PostgreSQL not ready yet, retrying in 5 seconds..."
+                sleep 5
+              done
+              if ! psql -h $PGHOST -U $PGUSER -d $PGDATABASE -c "SELECT 1;" > /dev/null 2>&1; then
+                echo "Failed to connect to PostgreSQL after 60 attempts"
+                exit 1
+              fi
+              echo "Executing SQL script..."
+              psql -h $PGHOST -U $PGUSER -d $PGDATABASE -a -f /sql/create_table.sql
+          volumeMounts:
+            - name: sql-scripts
+              mountPath: /sql
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"
+      volumes:
+        - name: sql-scripts
+          configMap:
+            name: sql-scripts

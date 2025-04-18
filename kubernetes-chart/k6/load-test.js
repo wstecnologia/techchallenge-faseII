@@ -8,10 +8,12 @@ export let options = {
     { duration: '30s', target: 100 }, // Escala para 100 usuários por 30 segundos
     { duration: '60s', target: 300 }, // Escala para 300 usuários por 60 segundos
   ],
+  httpDebug: 'full',  // Ativa a depuração HTTP
+  httpTimeout: '60s', // Aumenta o tempo de timeout para 60 segundos
 };
 
 export default function () {
-  let res = http.get('http://localhost:3000/api-docs');
+  let res = http.get('http://127.0.0.1:3000/api-docs');
   check(res, {
     'status é 200': (r) => r.status === 200,
   });
