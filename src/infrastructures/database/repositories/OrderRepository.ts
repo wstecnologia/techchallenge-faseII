@@ -27,17 +27,18 @@ export default class OrderRepository implements IOrderRepository {
     }
 
     return Order.create({
+      id:order.id,
       number: order.number,
       customerId: order.customerid,
       items: orderItems.map((item) => {
-        return new OrderItems(
-          item.id,
-          item.productid,
-          item.productdescription,
-          item.quantity,
-          item.productprice,
-          item.active,
-        )
+        return OrderItems.create({
+          numberOrder: item.numberorder,
+          quantity: item.quantity,
+          productId: item.productid,
+          productDescription: item.productdescription,
+          productPrice: item.productprice,
+          active: item.active
+        })
       }),
       situationId: order.situationid,
       observation: order.observation,
@@ -73,7 +74,7 @@ export default class OrderRepository implements IOrderRepository {
     )
   }
 
-  async listAllOrders(page: number = 1, limit = 10): Promise<IResponseListDto | null> {
+  async listAllOrders(page: number = 1, limit = 10): Promise<IResponseListDto| null> {
     const OFFSET = limit * (page - 1)
 
     const orders = await db.any(
@@ -114,23 +115,33 @@ export default class OrderRepository implements IOrderRepository {
 
         const orderItems = items.map((item) =>
           OrderItems.create({
+            id:item.id,
             numberOrder: item.numberorder,
             quantity: item.quantity,
             productId: item.productid,
             productDescription: item.productdescription,
             productPrice: item.productprice,
             active: item.active,
+
           })
         );
 
-        return Order.create({
+        const domainOrder = Order.create({
+          id: order.id,
           number: order.number,
           customerId: order.customerid,
           situationId: order.situationid,
-
           observation: order.observation,
           items: orderItems,
         });
+        const orderJson = domainOrder.toJSON();
+
+        return {
+          ...orderJson,
+          customerName: order.customerName,
+          situation: order.situation,
+        };
+
       })
     );
 

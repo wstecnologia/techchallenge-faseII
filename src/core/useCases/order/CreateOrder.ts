@@ -2,6 +2,7 @@ import { ICreateOrder, InputCreateOrder } from "@/core/adapters/dtos/CreateOrder
 import { IResponseRegisterDto } from "@/core/adapters/dtos/ResponseRegisterDto"
 import { IIdGenerator } from "@/core/adapters/interfaces/IidGenerator"
 import IOrderRepository from "@/core/adapters/interfaces/OrderRepository"
+import AppErrors from "@/core/shared/error/AppErrors"
 import Order from "../../entities/Order"
 import OrderItems from "../../entities/OrderItems"
 
@@ -12,8 +13,12 @@ export class CreateOrder implements ICreateOrder {
   ) {}
 
   async execute(order: InputCreateOrder): Promise<IResponseRegisterDto> {
-    const orderNumber = await this._orderRepository.numberOrder()
 
+    if(order.items.length === 0){
+      throw new AppErrors("Add items to order")
+    }
+
+    const orderNumber = await this._orderRepository.numberOrder()
     const orderId = this._idGenerator.gerar()
 
     const itemsWithId = order.items.map(item => {
