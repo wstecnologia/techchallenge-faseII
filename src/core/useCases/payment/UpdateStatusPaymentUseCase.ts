@@ -23,7 +23,7 @@ export class UpdateStatusPaymentUseCase {
     }
 
     payment.approved(status)
-    order.approved(status)
+    order.received()
 
 
     await this.paymentRepository.update(payment)
