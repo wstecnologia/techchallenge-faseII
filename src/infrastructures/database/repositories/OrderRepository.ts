@@ -100,14 +100,44 @@ export default class OrderRepository implements IOrderRepository {
       o.updated_at
       LIMIT ${limit} OFFSET ${OFFSET}`,
     )
-    if (!orders || orders.length === 0)
-      return {
-        items: [],
-        totalItems: 0,
-      }
+
+    if(!orders) {
+      return null
+    }
+
+    const returnOrders = await Promise.all(
+      orders.map(async (order) => {
+        const items = await db.any(
+          "SELECT * FROM ordersitems WHERE numberorder = $1",
+          [order.number]
+        );
+
+        const orderItems = items.map((item) =>
+          OrderItems.create({
+            numberOrder: item.numberorder,
+            quantity: item.quantity,
+            productId: item.productid,
+            productDescription: item.productdescription,
+            productPrice: item.productprice,
+            active: item.active,
+          })
+        );
+
+        return Order.create({
+          number: order.number,
+          customerId: order.customerid,
+          situationId: order.situationid,
+
+          observation: order.observation,
+          items: orderItems,
+        });
+      })
+    );
+
     return {
-      items: orders,
-      totalItems: orders[0].total_count,
+      items:returnOrders,
+      totalItems:orders[0].total_count
+
     }
   }
 
