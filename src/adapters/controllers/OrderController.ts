@@ -1,5 +1,6 @@
 import { InputCreateOrder } from "@/core/adapters/dtos/CreateOrder"
 import { IIdGenerator } from "@/core/adapters/interfaces/IidGenerator"
+import IPaymentRepository from "@/core/adapters/interfaces/IPaymentRepository"
 import IOrderRepository from "@/core/adapters/interfaces/OrderRepository"
 import Order from "@/core/entities/Order"
 import { OrderStatus } from "@/core/shared/constants/OrderStatus"
@@ -23,8 +24,9 @@ export default class OrderController {
   constructor(
     private readonly orderRepository: IOrderRepository,
     private readonly idGenerator: IIdGenerator,
+    private readonly paymentRepository:IPaymentRepository
   ) {
-    this.createOrder = new CreateOrder(this.orderRepository, this.idGenerator)
+    this.createOrder = new CreateOrder(this.orderRepository, this.paymentRepository, this.idGenerator)
     this.listAllOrder = new ListAllOrders(this.orderRepository)
     this.updateStatusOrder = new UpdateStatusOrder(this.orderRepository)
     this.orderInPreparation = new InPreparation(this.orderRepository)

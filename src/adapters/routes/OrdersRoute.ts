@@ -1,17 +1,14 @@
 import OrderController from "@/adapters/controllers/OrderController"
 import Id from "@/infrastructures/database/config/generateID/Id"
 import OrderRepository from "@/infrastructures/database/repositories/OrderRepository"
+import { PaymentRepository } from "@/infrastructures/database/repositories/PaymentRepository"
 import ExpressAdapter from "./ExpressAdapter"
 
 export default class OrderRoutes {
-  private _orderRepository: OrderRepository
-  private _idGenerator: Id
   private _orderController: OrderController
   constructor(private router: any) {
     this.router = router
-    this._orderRepository = new OrderRepository()
-    this._idGenerator = new Id()
-    this._orderController = new OrderController(this._orderRepository, this._idGenerator)
+    this._orderController = new OrderController(new OrderRepository(), new Id(), new PaymentRepository())
     this.initiazeRoutes()
   }
 

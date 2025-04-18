@@ -12,7 +12,14 @@ export default class OrderRepository implements IOrderRepository {
   async findByOrderId(id: string): Promise<Order | null> {
     const order = await db.oneOrNone(`select * from orders where id = $1 `, [id])
 
-    return order
+    return Order.create({
+      id:order.id,
+      number: order.number,
+      customerId: order.customerid,
+      items:[],
+      situationId: order.situationid,
+      observation: order.observation,
+    })
   }
 
   async findOrderByNumber(orderNumber: number): Promise<Order | null> {
@@ -69,7 +76,7 @@ export default class OrderRepository implements IOrderRepository {
 
   async updateOrderStatus(order:Order): Promise<object | null> {
     return await db.query(
-      `UPDATE orders SET situationId = $1, updated_at = CURRENT_TIMESTAMP WHERE number = $2`,
+      `UPDATE orders SET situationid = $1, updated_at = CURRENT_TIMESTAMP WHERE number = $2`,
       [order.situationId, order.number],
     )
   }
@@ -85,6 +92,7 @@ export default class OrderRepository implements IOrderRepository {
         o.created_at,
         o.updated_at,
         o.observation,
+        o.situationid,
         s.description situation,
         c.name customerName
       FROM orders o
@@ -106,8 +114,11 @@ export default class OrderRepository implements IOrderRepository {
       return null
     }
 
+
+
     const returnOrders = await Promise.all(
-      orders.map(async (order) => {
+    orders.map(async (order) => {
+
         const items = await db.any(
           "SELECT * FROM ordersitems WHERE numberorder = $1",
           [order.number]
@@ -143,7 +154,8 @@ export default class OrderRepository implements IOrderRepository {
         };
 
       })
-    );
+    )
+
 
     return {
       items:returnOrders,

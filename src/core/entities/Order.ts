@@ -33,16 +33,14 @@ export default class Order extends Entity {
   }
 
   static create(order: IOrder) {
-    const status = OrderStatus.AWAITING_PAYMENT
     const customer = order.customerId === "" ? DefaultCustomer.ANONYMOUS : order.customerId
-
 
     return new Order(
       order.id || "",
       order.number,
       order.items ?? [],
       customer,
-      status,
+      order.situationId,
       order.observation ?? "",
 
     )
@@ -89,14 +87,14 @@ export default class Order extends Entity {
   }
 
   finalize() {
-    if (this._situationId !== OrderStatus.PAYMENT_APPROVED) {
+    if (this._situationId !== OrderStatus.READY) {
       throw new AppErrors(ErrosMessage.CURRENT_STATE_NOT_CHANGES)
     }
     this._situationId = OrderStatus.FINISHED
   }
 
   ready() {
-    if (this._situationId !== OrderStatus.PAYMENT_APPROVED) {
+    if (this._situationId !== OrderStatus.IN_PREPARATION) {
       throw new AppErrors(ErrosMessage.CURRENT_STATE_NOT_CHANGES)
     }
     this._situationId = OrderStatus.READY
