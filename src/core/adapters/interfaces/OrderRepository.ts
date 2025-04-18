@@ -10,4 +10,5 @@ export default interface IOrderRepository {
   findOrderByNumber(orderNumber: number): Promise<Order | null>
   findOrderByStatus(status: string): Promise<Order | null>
   findByOrderId(id: string): Promise<Order | null>
+  findOrderIdByNumber(numberOrder: number): Promise<string | null>
 }
