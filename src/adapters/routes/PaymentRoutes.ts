@@ -38,7 +38,7 @@ class PaymentRoutes {
 
   private async getStatusPayment({ body }: { body: any }) {
     const { orderId } = body
-    return this._paymentController.getStatusPayment(orderId)
+    return await this._paymentController.getStatusPayment(orderId)
   }
 }
 
