@@ -3,6 +3,7 @@ import ErrosMessage from "@/core/shared/error/ErrosMessage"
 import Entity from "../shared/Entity"
 
 type ICreateOrderItems = {
+  id?:string
   numberOrder: number
   quantity: number
   productId: string
@@ -14,7 +15,8 @@ type ICreateOrderItems = {
 export default class OrderItems extends Entity {
   private _totalValueItem:number
 
-  constructor(
+  private constructor(
+    id:string,
     private _numberOrder: number,
     private _quantity: number,
     private _productId: string,
@@ -22,18 +24,14 @@ export default class OrderItems extends Entity {
     private _productPrice: number,
     private _active: boolean,
   ) {
-    super("")
-    this._numberOrder = _numberOrder
+    super(id)
     this._quantity = this.validateQuantity(_quantity)
-    this._productId = _productId
-    this._productDescription = _productDescription
-    this._productPrice = _productPrice
-    this._active = _active
     this._totalValueItem = this.sumTotalValueItem()
   }
 
   static create(orderItens: ICreateOrderItems) {
     return new OrderItems(
+      orderItens.id || "",
       orderItens.numberOrder,
       orderItens.quantity,
       orderItens.productId,
@@ -82,4 +80,21 @@ export default class OrderItems extends Entity {
     }
     return value
   }
+
+
+  toJSON() {
+    return {
+      id: this.id,
+      numberOrder: this.numberOrder,
+      quantity: this.quantity,
+      productId: this.productId,
+      productDescription: this.productDescription,
+      productPrice: this.productPrice,
+      active: this.active,
+      totalValueItem: this.totalValueItem,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+    };
+  }
+
 }
