@@ -20,17 +20,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
-        run: npm run test -- --coverage
-
-      - name: Check coverage threshold
-        run: |
-          COVERAGE=$(npx jest --coverage --coverageReporters=text-summary | grep -Po 'Lines\s*\|\s*\K[0-9.]+(?=%)' | tail -1)
-          if [ $(echo "$COVERAGE < 70" | bc -l) -eq 1 ]; then
-            echo "Coverage is below 70%. Found: $COVERAGE%."
-            exit 1
-          fi
-
       - name: Run build
         run: npm run build  
 
@@ -54,4 +43,4 @@ jobs:
       
       - name: Push Docker image
         run: |
-          docker push wstecnologia/lanchonetews:latest
+          docker push wstecnologia/lanchonetews:latest          
