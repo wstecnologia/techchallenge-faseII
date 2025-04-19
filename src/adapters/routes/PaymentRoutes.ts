@@ -36,9 +36,8 @@ class PaymentRoutes {
     return this._paymentController.updateStatus(paymentId, status)
   }
 
-  private async getStatusPayment({ body }: { body: any }) {
-    const { orderId } = body
-    return await this._paymentController.getStatusPayment(orderId)
+  private async getStatusPayment({ query }: { query: any }) {
+    return this._paymentController.getStatusPayment(query.numberOrder)
   }
 }
 
